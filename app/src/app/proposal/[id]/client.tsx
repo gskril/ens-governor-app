@@ -74,8 +74,8 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <div className="grid gap-6 lg:grid-cols-[5fr_2fr]">
         {/* Proposal body */}
-        <Card>
-          <CardContent className="p-6">
+        <Card className="max-w-full overflow-x-auto">
+          <CardContent className="max-w-full p-6">
             <ReactMarkdown
               components={{
                 h1: ({ children }) => (
