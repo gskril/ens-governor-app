@@ -11,9 +11,8 @@ export function useProposals() {
 }
 
 export async function getProposals() {
-  const baseUrl = 'http://localhost:42069'
   const path = '/proposals'
-  const url = new URL(path, baseUrl).toString()
+  const url = new URL(path, process.env.NEXT_PUBLIC_PONDER_URL).toString()
 
   const response = await fetch(url)
   const json = await response.json()
