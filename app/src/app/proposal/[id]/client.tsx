@@ -24,7 +24,6 @@ import {
   cn,
   formatStartDate,
   formatVoteCount,
-  getColorForVote,
   truncateAddress,
 } from '@/lib/utils'
 
