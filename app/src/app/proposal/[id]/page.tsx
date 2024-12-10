@@ -18,6 +18,7 @@ import {
 import { Typography } from '@/components/ui/typography'
 import { getProposal } from '@/hooks/useProposal'
 import {
+  cn,
   formatStartDate,
   formatVoteCount,
   formatVotes,
@@ -159,14 +160,25 @@ export default async function ProposalPage({ params }: PageProps) {
                   className="flex w-full justify-between gap-4"
                 >
                   <div>
-                    {truncateAddress(vote.voter)}{' '}
-                    <span className={getColorForVote(vote.support)}>
+                    <a
+                      href={`https://etherscan.io/address/${vote.voter}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {truncateAddress(vote.voter)}{' '}
+                    </a>
+                    <span
+                      className={cn(
+                        getColorForVote(vote.support),
+                        'font-medium'
+                      )}
+                    >
                       {vote.support === 0
                         ? 'voted against'
                         : vote.support === 1
                           ? 'voted for'
                           : 'abstained'}
-                    </span>{' '}
+                    </span>
                   </div>
 
                   <div>
