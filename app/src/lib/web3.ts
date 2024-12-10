@@ -19,6 +19,10 @@ export const wagmiConfig = createConfig({
   chains,
   connectors,
   transports: {
-    [mainnet.id]: http(process.env.NEXT_PUBLIC_ETH_RPC_URL),
+    [mainnet.id]: http(process.env.NEXT_PUBLIC_ETH_RPC_URL, {
+      // Some RPC providers don't support batch requests
+      // If you can enable it, you'll get improved performance on ENS lookups
+      batch: false,
+    }),
   },
 })

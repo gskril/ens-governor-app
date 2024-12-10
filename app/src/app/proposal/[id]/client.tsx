@@ -48,16 +48,25 @@ export function ProposalPageClient({ proposal }: Props) {
 
           <hr />
 
-          <Typography className="mb-2 block">
+          <Typography className="mb-2 flex">
             Proposed by{' '}
-            <a
-              href={`https://etherscan.io/address/${proposal.proposer}`}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              {proposerEnsName ?? truncateAddress(proposal.proposer)}
-            </a>{' '}
+            <div className="mx-1.5 flex items-center gap-1">
+              {proposerEnsName && (
+                <img
+                  src={`https://ens-api.gregskril.com/avatar/${proposerEnsName}?width=64`}
+                  alt={proposerEnsName}
+                  className="size-6 rounded-full object-cover"
+                />
+              )}
+              <a
+                href={`https://etherscan.io/address/${proposal.proposer}`}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {proposerEnsName ?? truncateAddress(proposal.proposer)}
+              </a>
+            </div>
             on {formatStartDate(proposal)}
           </Typography>
         </CardContent>
@@ -145,46 +154,56 @@ export function ProposalPageClient({ proposal }: Props) {
           <CardHeader>
             <CardTitle>Votes</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-2">
             {proposal.votes.map((vote) => {
-              return (
-                <div
-                  key={vote.id}
-                  className="flex w-full justify-between gap-4"
-                >
-                  <div>
-                    <a
-                      href={`https://etherscan.io/address/${vote.voter}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {truncateAddress(vote.voter)}{' '}
-                    </a>
-                    <span
-                      className={cn(
-                        vote.support === 0 && 'text-destructive',
-                        vote.support === 1 && 'text-green-600',
-                        vote.support === 2 && 'text-zinc-500',
-                        'font-medium'
-                      )}
-                    >
-                      {vote.support === 0
-                        ? 'voted against'
-                        : vote.support === 1
-                          ? 'voted for'
-                          : 'abstained'}
-                    </span>
-                  </div>
-
-                  <div>
-                    {formatVoteCount(BigInt(vote.weight) / BigInt(1e18))}
-                  </div>
-                </div>
-              )
+              return <Vote key={vote.id} vote={vote} />
             })}
           </CardContent>
         </Card>
       </div>
     </main>
+  )
+}
+
+function Vote({ vote }: { vote: EnhancedProposalWithVotes['votes'][number] }) {
+  const { data: ensName } = useEnsName({ address: vote.voter })
+
+  return (
+    <div key={vote.id} className="flex w-full justify-between gap-4">
+      <div className="flex items-center gap-2">
+        <img
+          src={
+            ensName
+              ? `https://ens-api.gregskril.com/avatar/${ensName}?width=64`
+              : '/img/fallback-avatar.svg'
+          }
+          alt={ensName ?? truncateAddress(vote.voter)}
+          className="size-8 rounded-full object-cover"
+        />
+        <a
+          href={`https://etherscan.io/address/${vote.voter}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {ensName ?? truncateAddress(vote.voter)}{' '}
+        </a>
+        <span
+          className={cn(
+            vote.support === 0 && 'text-destructive',
+            vote.support === 1 && 'text-green-600',
+            vote.support === 2 && 'text-zinc-500',
+            'font-medium'
+          )}
+        >
+          {vote.support === 0
+            ? 'voted against'
+            : vote.support === 1
+              ? 'voted for'
+              : 'abstained'}
+        </span>
+      </div>
+
+      <div>{formatVoteCount(BigInt(vote.weight) / BigInt(1e18))}</div>
+    </div>
   )
 }
