@@ -28,3 +28,7 @@ export function formatVotes(proposal: EnhancedProposal) {
     maximumFractionDigits: 2,
   }).format(Number(value))
 }
+
+export function truncateAddress(address: string) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`
+}

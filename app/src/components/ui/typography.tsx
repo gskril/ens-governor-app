@@ -7,7 +7,7 @@ type Props = {
   as?: Elements
 } & React.HTMLAttributes<HTMLSpanElement>
 
-export function Typography({ children, className, as = 'p', ...props }: Props) {
+export function Typography({ children, className, as, ...props }: Props) {
   switch (as) {
     case 'h1':
       return (
@@ -91,6 +91,10 @@ export function Typography({ children, className, as = 'p', ...props }: Props) {
         </p>
       )
     default:
-      return <span {...props}>{children}</span>
+      return (
+        <span className={className} {...props}>
+          {children}
+        </span>
+      )
   }
 }
