@@ -11,9 +11,15 @@ importers:
       '@ponder/core':
         specifier: ^0.7.17
         version: 0.7.17(@opentelemetry/api@1.9.0)(@types/node@20.17.9)(hono@4.6.13)(typescript@5.7.2)(viem@2.21.54(typescript@5.7.2))
+      '@ponder/utils':
+        specifier: ^0.2.3
+        version: 0.2.3(typescript@5.7.2)(viem@2.21.54(typescript@5.7.2))
       hono:
         specifier: ^4.5.0
         version: 4.6.13
+      marked:
+        specifier: ^15.0.3
+        version: 15.0.3
       viem:
         specifier: ^2.21.3
         version: 2.21.54(typescript@5.7.2)
@@ -1488,6 +1494,11 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
+  marked@15.0.3:
+    resolution: {integrity: sha512-Ai0cepvl2NHnTcO9jYDtcOEtVBNVYR31XnEA3BndO7f5As1wzpcOceSUM8FDkNLJNIODcLpDTWay/qQhqbuMvg==}
+    engines: {node: '>= 18'}
+    hasBin: true
 
   merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -3531,6 +3542,8 @@ snapshots:
       js-tokens: 4.0.0
 
   lru-cache@10.4.3: {}
+
+  marked@15.0.3: {}
 
   merge-stream@2.0.0: {}
 

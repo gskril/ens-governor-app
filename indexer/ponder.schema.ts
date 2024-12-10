@@ -1,4 +1,34 @@
-import { onchainTable } from '@ponder/core'
+import { onchainTable, relations } from '@ponder/core'
+
+export const proposal = onchainTable('proposal', (t) => ({
+  id: t.bigint().primaryKey(),
+  title: t.text().notNull(),
+  createdAtBlock: t.bigint().notNull(),
+  createdAtTimestamp: t.bigint().notNull(),
+  startTimestamp: t.bigint().notNull(),
+  endTimestamp: t.bigint().notNull(),
+  queuedAtTimestamp: t.bigint(),
+  executedAtTimestamp: t.bigint(),
+  canceledAtTimestamp: t.bigint(),
+  quorum: t.bigint().notNull(),
+  forVotes: t.bigint().notNull(),
+  againstVotes: t.bigint().notNull(),
+  abstainVotes: t.bigint().notNull(),
+
+  // Raw from contract
+  proposer: t.hex().notNull(),
+  targets: t.jsonb().notNull(),
+  values: t.jsonb().notNull(),
+  signatures: t.jsonb().notNull(),
+  calldatas: t.jsonb().notNull(),
+  startBlock: t.bigint().notNull(),
+  endBlock: t.bigint().notNull(),
+  description: t.text().notNull(),
+}))
+
+export const proposalRelations = relations(proposal, ({ many }) => ({
+  votes: many(voteCastEvent),
+}))
 
 export const proposalCanceledEvent = onchainTable(
   'proposalCanceledEvent',
@@ -67,4 +97,11 @@ export const voteCastEvent = onchainTable('voteCastEvent', (t) => ({
   support: t.integer().notNull(),
   weight: t.bigint().notNull(),
   reason: t.text().notNull(),
+}))
+
+export const voteCastEventRelations = relations(voteCastEvent, ({ one }) => ({
+  proposal: one(proposal, {
+    fields: [voteCastEvent.proposalId],
+    references: [proposal.id],
+  }),
 }))
