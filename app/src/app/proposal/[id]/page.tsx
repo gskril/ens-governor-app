@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 import { ProposalStatus } from '@/components/ProposalStatus'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -17,7 +17,13 @@ import {
 } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { getProposal } from '@/hooks/useProposal'
-import { formatStartDate, truncateAddress } from '@/lib/utils'
+import {
+  formatStartDate,
+  formatVoteCount,
+  formatVotes,
+  getColorForVote,
+  truncateAddress,
+} from '@/lib/utils'
 
 type PageProps = {
   params: Promise<{ id: string }>
@@ -63,70 +69,115 @@ export default async function ProposalPage({ params }: PageProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="p-6">
-          <ReactMarkdown
-            components={{
-              h1: ({ children }) => (
-                <Typography as="h1" className="mb-6">
-                  {children}
-                </Typography>
-              ),
-              h2: ({ children }) => (
-                <Typography as="h2" className="mb-2">
-                  {children}
-                </Typography>
-              ),
-              h3: ({ children }) => <Typography as="h3">{children}</Typography>,
-              h4: ({ children }) => <Typography as="h4">{children}</Typography>,
-              h5: ({ children }) => <Typography as="h5">{children}</Typography>,
-              h6: ({ children }) => <Typography as="h6">{children}</Typography>,
-              p: ({ children }) => <Typography as="p">{children}</Typography>,
-              a: ({ children, href }) => (
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
+      <div className="grid gap-6 lg:grid-cols-[5fr_2fr]">
+        {/* Proposal body */}
+        <Card>
+          <CardContent className="p-6">
+            <ReactMarkdown
+              components={{
+                h1: ({ children }) => (
+                  <Typography as="h1" className="mb-6">
+                    {children}
+                  </Typography>
+                ),
+                h2: ({ children }) => (
+                  <Typography as="h2" className="mb-2">
+                    {children}
+                  </Typography>
+                ),
+                h3: ({ children }) => (
+                  <Typography as="h3">{children}</Typography>
+                ),
+                h4: ({ children }) => (
+                  <Typography as="h4">{children}</Typography>
+                ),
+                h5: ({ children }) => (
+                  <Typography as="h5">{children}</Typography>
+                ),
+                h6: ({ children }) => (
+                  <Typography as="h6">{children}</Typography>
+                ),
+                p: ({ children }) => <Typography as="p">{children}</Typography>,
+                a: ({ children, href }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline"
+                  >
+                    {children}
+                  </a>
+                ),
+                ul: ({ children }) => (
+                  <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+                    {children}
+                  </ul>
+                ),
+                ol: ({ children }) => (
+                  <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">
+                    {children}
+                  </ol>
+                ),
+                table: ({ children }) => (
+                  <div className="my-6 rounded border">
+                    <Table>{children}</Table>
+                  </div>
+                ),
+                thead: ({ children }) => <TableHeader>{children}</TableHeader>,
+                tbody: ({ children }) => <TableBody>{children}</TableBody>,
+                tfoot: ({ children }) => <TableFooter>{children}</TableFooter>,
+                tr: ({ children }) => <TableRow>{children}</TableRow>,
+                th: ({ children }) => <TableHead>{children}</TableHead>,
+                td: ({ children }) => <TableCell>{children}</TableCell>,
+                caption: ({ children }) => (
+                  <TableCaption>{children}</TableCaption>
+                ),
+                hr: () => <hr className="my-6" />,
+                pre: ({ children }) => (
+                  <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
+                    {children}
+                  </pre>
+                ),
+              }}
+              remarkPlugins={[remarkGfm]}
+            >
+              {proposal.description}
+            </ReactMarkdown>
+          </CardContent>
+        </Card>
+
+        {/* Votes */}
+        <Card className="sticky top-6 h-fit">
+          <CardHeader>
+            <CardTitle>Votes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {proposal.votes.map((vote) => {
+              return (
+                <div
+                  key={vote.id}
+                  className="flex w-full justify-between gap-4"
                 >
-                  {children}
-                </a>
-              ),
-              ul: ({ children }) => (
-                <ul className="my-6 ml-6 list-disc [&>li]:mt-2">{children}</ul>
-              ),
-              ol: ({ children }) => (
-                <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">
-                  {children}
-                </ol>
-              ),
-              table: ({ children }) => (
-                <div className="my-6 rounded border">
-                  <Table>{children}</Table>
+                  <div>
+                    {truncateAddress(vote.voter)}{' '}
+                    <span className={getColorForVote(vote.support)}>
+                      {vote.support === 0
+                        ? 'voted against'
+                        : vote.support === 1
+                          ? 'voted for'
+                          : 'abstained'}
+                    </span>{' '}
+                  </div>
+
+                  <div>
+                    {formatVoteCount(BigInt(vote.weight) / BigInt(1e18))}
+                  </div>
                 </div>
-              ),
-              thead: ({ children }) => <TableHeader>{children}</TableHeader>,
-              tbody: ({ children }) => <TableBody>{children}</TableBody>,
-              tfoot: ({ children }) => <TableFooter>{children}</TableFooter>,
-              tr: ({ children }) => <TableRow>{children}</TableRow>,
-              th: ({ children }) => <TableHead>{children}</TableHead>,
-              td: ({ children }) => <TableCell>{children}</TableCell>,
-              caption: ({ children }) => (
-                <TableCaption>{children}</TableCaption>
-              ),
-              hr: () => <hr className="my-6" />,
-              pre: ({ children }) => (
-                <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
-                  {children}
-                </pre>
-              ),
-            }}
-            remarkPlugins={[remarkGfm]}
-          >
-            {proposal.description}
-          </ReactMarkdown>
-        </CardContent>
-      </Card>
+              )
+            })}
+          </CardContent>
+        </Card>
+      </div>
     </main>
   )
 }
