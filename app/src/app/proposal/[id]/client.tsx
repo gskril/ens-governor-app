@@ -53,7 +53,7 @@ export function ProposalPageClient({ proposal }: Props) {
             <div className="mx-1.5 flex items-center gap-1">
               {proposerEnsName && (
                 <img
-                  src={`https://ens-api.gregskril.com/avatar/${proposerEnsName}?width=64`}
+                  src={`https://ens-api.gregskril.com/avatar/${proposerEnsName}?width=48`}
                   alt={proposerEnsName}
                   className="size-6 rounded-full object-cover"
                 />
@@ -154,7 +154,7 @@ export function ProposalPageClient({ proposal }: Props) {
           <CardHeader>
             <CardTitle>Votes</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {
               return <Vote key={vote.id} vote={vote} />
             })}
@@ -169,41 +169,50 @@ function Vote({ vote }: { vote: EnhancedProposalWithVotes['votes'][number] }) {
   const { data: ensName } = useEnsName({ address: vote.voter })
 
   return (
-    <div key={vote.id} className="flex w-full justify-between gap-4">
-      <div className="flex items-center gap-2">
-        <img
-          src={
-            ensName
-              ? `https://ens-api.gregskril.com/avatar/${ensName}?width=64`
-              : '/img/fallback-avatar.svg'
-          }
-          alt={ensName ?? truncateAddress(vote.voter)}
-          className="size-8 rounded-full object-cover"
-        />
-        <a
-          href={`https://etherscan.io/address/${vote.voter}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {ensName ?? truncateAddress(vote.voter)}{' '}
-        </a>
-        <span
-          className={cn(
-            vote.support === 0 && 'text-destructive',
-            vote.support === 1 && 'text-green-600',
-            vote.support === 2 && 'text-zinc-500',
-            'font-medium'
-          )}
-        >
-          {vote.support === 0
-            ? 'voted against'
-            : vote.support === 1
-              ? 'voted for'
-              : 'abstained'}
-        </span>
+    <div key={vote.id} className="space-y-1.5 text-sm">
+      <div className="flex w-full justify-between gap-4">
+        <div className="flex items-center">
+          <img
+            src={
+              ensName
+                ? `https://ens-api.gregskril.com/avatar/${ensName}?width=48`
+                : '/img/fallback-avatar.svg'
+            }
+            alt={ensName ?? truncateAddress(vote.voter)}
+            className="size-6 rounded-full object-cover"
+          />
+          <a
+            href={`https://etherscan.io/address/${vote.voter}`}
+            target="_blank"
+            rel="noreferrer"
+            className="ml-1.5 mr-1"
+          >
+            {ensName ?? truncateAddress(vote.voter)}
+          </a>
+          <span
+            className={cn(
+              vote.support === 0 && 'text-destructive',
+              vote.support === 1 && 'text-green-600',
+              vote.support === 2 && 'text-zinc-500',
+              'font-medium'
+            )}
+          >
+            {vote.support === 0
+              ? 'voted against'
+              : vote.support === 1
+                ? 'voted for'
+                : 'abstained'}
+          </span>
+        </div>
+
+        <div>{formatVoteCount(BigInt(vote.weight) / BigInt(1e18))}</div>
       </div>
 
-      <div>{formatVoteCount(BigInt(vote.weight) / BigInt(1e18))}</div>
+      {vote.reason && (
+        <Typography as="span" className="block text-zinc-600">
+          {vote.reason}
+        </Typography>
+      )}
     </div>
   )
 }
