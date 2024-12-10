@@ -3,6 +3,7 @@ import { replaceBigInts } from '@ponder/utils'
 
 import { ponder } from '@/generated'
 
+import { EnhancedProposal } from '../types'
 import { getPropQuorumReached } from '../utils'
 import { getPropStatus } from '../utils'
 
@@ -10,7 +11,7 @@ ponder.use('/', graphql())
 
 ponder.get('/proposals', async (c) => {
   const props = await c.db.query.proposal.findMany({
-    limit: 10,
+    limit: 15,
     orderBy: (table, { desc }) => [desc(table.createdAtBlock)],
   })
 
@@ -40,7 +41,15 @@ ponder.get('/proposals/:proposalId', async (c) => {
 
   const status = getPropStatus(prop)
   const quorumReached = getPropQuorumReached(prop)
-  return c.json(
-    replaceBigInts({ status, quorumReached, ...prop }, (v) => String(v))
+
+  const enhancedProposal: EnhancedProposal = replaceBigInts(
+    {
+      status,
+      quorumReached,
+      ...prop,
+    },
+    (v) => String(v)
   )
+
+  return c.json(enhancedProposal)
 })

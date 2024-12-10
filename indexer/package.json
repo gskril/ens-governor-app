@@ -27,5 +27,8 @@
   },
   "engines": {
     "node": ">=18.14"
+  },
+  "exports": {
+    "./types": "./src/types.ts"
   }
 }

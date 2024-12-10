@@ -1,6 +1,7 @@
 import { Tokens, marked } from 'marked'
 
 import { proposal } from '../ponder.schema'
+import { Status } from './types'
 
 export function getTitle(description: string) {
   const tokens = marked.lexer(description)
@@ -10,16 +11,6 @@ export function getTitle(description: string) {
 
   return firstHeading?.text ?? description.slice(0, 60) + '...'
 }
-
-type Status =
-  | 'pending'
-  | 'active'
-  | 'canceled'
-  | 'defeated'
-  | 'succeeded'
-  | 'queued'
-  | 'executed'
-  | 'expired'
 
 export function getPropStatus(prop: typeof proposal.$inferSelect): Status {
   const currentTimestamp = new Date().getTime() / 1000
