@@ -31,8 +31,12 @@ ponder.get('/proposals', async (c) => {
 ponder.get('/proposals/:proposalId', async (c) => {
   const proposalId = c.req.param('proposalId')
   const prop = await c.db.query.proposal.findFirst({
-    where: (table, { eq }) => eq(table.id, BigInt(proposalId)),
-    with: { votes: true },
+    where: (cols, { eq }) => eq(cols.id, BigInt(proposalId)),
+    with: {
+      votes: {
+        orderBy: (cols, { desc }) => [desc(cols.weight)],
+      },
+    },
   })
 
   if (!prop) {
