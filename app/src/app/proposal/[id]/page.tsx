@@ -101,7 +101,9 @@ export default async function ProposalPage({ params }: PageProps) {
                 </ol>
               ),
               table: ({ children }) => (
-                <Table className="my-6 rounded border">{children}</Table>
+                <div className="my-6 rounded border">
+                  <Table>{children}</Table>
+                </div>
               ),
               thead: ({ children }) => <TableHeader>{children}</TableHeader>,
               tbody: ({ children }) => <TableBody>{children}</TableBody>,
