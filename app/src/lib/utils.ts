@@ -36,14 +36,3 @@ export function formatVoteCount(count: bigint) {
 export function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
-
-export function getColorForVote(support: number) {
-  switch (support) {
-    case 0:
-      return 'text-destructive'
-    case 1:
-      return 'text-green-600'
-    default:
-      return 'text-zinc-500'
-  }
-}
