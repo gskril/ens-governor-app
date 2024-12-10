@@ -12,7 +12,7 @@ import {
   timelockChangeEvent,
   voteCastEvent,
 } from '../ponder.schema'
-import { getTitle } from './utils'
+import { getTitle, removeTitle } from './utils'
 
 ponder.on('Governor:ProposalCanceled', async ({ event, context }) => {
   await context.db.insert(proposalCanceledEvent).values({
@@ -70,6 +70,7 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
     againstVotes: 0n,
     abstainVotes: 0n,
     values: replaceBigInts(event.args.values, (v) => String(v)),
+    description: removeTitle(event.args.description),
   })
 })
 

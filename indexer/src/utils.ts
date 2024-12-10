@@ -3,13 +3,21 @@ import { Tokens, marked } from 'marked'
 import { proposal } from '../ponder.schema'
 import { Status } from './types'
 
-export function getTitle(description: string) {
+function getFirstHeadingToken(description: string) {
   const tokens = marked.lexer(description)
-  const firstHeading = tokens.find(
+  return tokens.find(
     (token) => token.type === 'heading' && token.depth === 1
-  ) as Tokens.Heading
+  ) as Tokens.Heading | undefined
+}
 
+export function getTitle(description: string) {
+  const firstHeading = getFirstHeadingToken(description)
   return firstHeading?.text ?? description.slice(0, 60) + '...'
+}
+
+export function removeTitle(description: string) {
+  const firstHeading = getFirstHeadingToken(description)
+  return description.slice(firstHeading?.raw.length)
 }
 
 export function getPropStatus(prop: typeof proposal.$inferSelect): Status {
