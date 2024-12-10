@@ -1,4 +1,4 @@
-import { proposal } from '../ponder.schema'
+import { proposal, voteCastEvent } from '../ponder.schema'
 
 export type Status =
   | 'pending'
@@ -21,4 +21,8 @@ type ReplaceBigInts<T> = T extends bigint
 export type EnhancedProposal = ReplaceBigInts<typeof proposal.$inferSelect> & {
   status: Status
   quorumReached: boolean
+}
+
+export type EnhancedProposalWithVotes = EnhancedProposal & {
+  votes: ReplaceBigInts<(typeof voteCastEvent.$inferSelect)[]>
 }

@@ -1,11 +1,11 @@
 import { cn } from '@/lib/utils'
 
-type TypographyType = 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span'
+type Elements = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span'
 
 type Props = {
   children: React.ReactNode
-  as?: TypographyType
-} & React.HTMLAttributes<HTMLDivElement>
+  as?: Elements
+} & React.HTMLAttributes<HTMLSpanElement>
 
 export function Typography({ children, className, as = 'p', ...props }: Props) {
   switch (as) {
@@ -25,7 +25,7 @@ export function Typography({ children, className, as = 'p', ...props }: Props) {
       return (
         <h2
           className={cn(
-            'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0',
+            'scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0',
             className
           )}
           {...props}
@@ -57,14 +57,40 @@ export function Typography({ children, className, as = 'p', ...props }: Props) {
           {children}
         </h4>
       )
-    default:
+    case 'h5':
+      return (
+        <h5
+          className={cn(
+            'scroll-m-20 text-lg font-semibold tracking-tight',
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </h5>
+      )
+    case 'h6':
+      return (
+        <h6
+          className={cn(
+            'scroll-m-20 text-base font-medium tracking-tight',
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </h6>
+      )
+    case 'p':
       return (
         <p
-          className={cn('leading-7 [&:not(:first-child)]:mt-6', className)}
+          className={cn('leading-7 [&:not(:last-child)]:mb-6', className)}
           {...props}
         >
           {children}
         </p>
       )
+    default:
+      return <span {...props}>{children}</span>
   }
 }

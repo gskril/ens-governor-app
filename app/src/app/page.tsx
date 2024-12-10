@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { ProposalStatus } from '@/components/ProposalStatus'
 import {
   Table,
@@ -29,7 +31,14 @@ export default async function Home() {
             <TableCell className="font-medium">
               {formatStartDate(proposal)}
             </TableCell>
-            <TableCell>{proposal.title}</TableCell>
+            <TableCell>
+              <Link
+                href={`/proposal/${proposal.id}`}
+                className="hover:underline"
+              >
+                {proposal.title}
+              </Link>
+            </TableCell>
             <TableCell>
               <ProposalStatus proposal={proposal} />
             </TableCell>
