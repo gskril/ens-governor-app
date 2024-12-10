@@ -24,6 +24,8 @@ import {
   cn,
   formatStartDate,
   formatVoteCount,
+  getPercentageOfTotalVotes,
+  getQuorumProgress,
   truncateAddress,
 } from '@/lib/utils'
 
@@ -74,7 +76,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <div className="grid gap-6 lg:grid-cols-[5fr_2fr]">
         {/* Proposal body */}
-        <Card className="max-w-full overflow-x-auto">
+        <Card className="h-fit max-w-full overflow-x-auto">
           <CardContent className="max-w-full p-6">
             <ReactMarkdown
               components={{
@@ -151,8 +153,55 @@ export function ProposalPageClient({ proposal }: Props) {
 
         {/* Votes */}
         <Card className="sticky top-6 h-fit">
-          <CardHeader>
+          <CardHeader className="space-y-2">
             <CardTitle>Votes</CardTitle>
+
+            {/* Quorum bar */}
+            <div className="space-y-1">
+              <Typography className="text-sm text-zinc-500">
+                Quorum progress: {getQuorumProgress(proposal)}%
+              </Typography>
+              <div className="h-2 overflow-hidden rounded bg-zinc-200">
+                <div
+                  className="h-full rounded bg-green-600"
+                  style={{
+                    width: `${getQuorumProgress(proposal)}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* For votes */}
+            <div className="space-y-1">
+              <Typography className="text-sm text-zinc-500">
+                For votes:{' '}
+                {formatVoteCount(BigInt(proposal.forVotes) / BigInt(1e18))}
+              </Typography>
+              <div className="h-2 overflow-hidden rounded bg-zinc-200">
+                <div
+                  className="h-full rounded bg-green-600"
+                  style={{
+                    width: `${getPercentageOfTotalVotes(proposal.forVotes, proposal)}%`,
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Against votes */}
+            <div className="space-y-1">
+              <Typography className="text-sm text-zinc-500">
+                Against votes:{' '}
+                {formatVoteCount(BigInt(proposal.againstVotes) / BigInt(1e18))}
+              </Typography>
+              <div className="h-2 overflow-hidden rounded bg-zinc-200">
+                <div
+                  className="bg-destructive h-full rounded"
+                  style={{
+                    width: `${getPercentageOfTotalVotes(proposal.againstVotes, proposal)}%`,
+                  }}
+                />
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {

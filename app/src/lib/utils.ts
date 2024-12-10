@@ -36,3 +36,26 @@ export function formatVoteCount(count: bigint) {
 export function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
+
+export function getQuorumProgress(proposal: EnhancedProposal) {
+  const forVotes = BigInt(proposal.forVotes) / BigInt(1e18)
+  const abstainVotes = BigInt(proposal.abstainVotes) / BigInt(1e18)
+  const quorum = Number(BigInt(proposal.quorum) / BigInt(1e18))
+
+  const countedVotes = Number(forVotes) + Number(abstainVotes)
+  const progress = (countedVotes / quorum) * 100
+
+  return Number(progress.toFixed(2))
+}
+
+export function getPercentageOfTotalVotes(
+  numerator: string,
+  proposal: EnhancedProposal
+) {
+  const againstVotes = BigInt(proposal.againstVotes) / BigInt(1e18)
+  const forVotes = BigInt(proposal.forVotes) / BigInt(1e18)
+  const abstainVotes = BigInt(proposal.abstainVotes) / BigInt(1e18)
+  const totalVotes = againstVotes + forVotes + abstainVotes
+  const num = BigInt(numerator) / BigInt(1e18)
+  return (Number(num) / Number(totalVotes)) * 100
+}
