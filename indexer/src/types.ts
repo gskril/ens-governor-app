@@ -1,3 +1,5 @@
+import { Hex } from 'viem'
+
 import { proposal, voteCastEvent } from '../ponder.schema'
 
 export type Status =
@@ -21,6 +23,12 @@ type ReplaceBigInts<T> = T extends bigint
 export type EnhancedProposal = ReplaceBigInts<typeof proposal.$inferSelect> & {
   status: Status
   quorumReached: boolean
+
+  // Correct unknown types
+  values: string[]
+  targets: Hex[]
+  signatures: Hex[]
+  calldatas: Hex[]
 }
 
 export type EnhancedProposalWithVotes = EnhancedProposal & {

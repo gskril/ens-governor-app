@@ -94,7 +94,6 @@ export function ProposalPageClient({ proposal }: Props) {
       </a>
 
       <div className="grid gap-6 lg:grid-cols-[5fr_2fr]">
-        {/* Proposal body */}
         <Card className="h-fit overflow-x-auto">
           <Tabs defaultValue="body">
             <TabsList className="h-auto w-full justify-start rounded-none p-2">
@@ -103,11 +102,12 @@ export function ProposalPageClient({ proposal }: Props) {
               </TabsTrigger>
               <TabsTrigger className="w-full" value="calldata">
                 <span className="hidden lg:block">Executable Code</span>
-                <span className="block lg:hidden">Calldata</span>
+                <span className="block lg:hidden">Code</span>
               </TabsTrigger>
             </TabsList>
 
             <CardContent>
+              {/* Proposal body */}
               <TabsContent value="body">
                 <ReactMarkdown
                   components={{
@@ -187,7 +187,25 @@ export function ProposalPageClient({ proposal }: Props) {
                 </ReactMarkdown>
               </TabsContent>
 
-              <TabsContent value="calldata"></TabsContent>
+              {/* Executable code */}
+              <TabsContent value="calldata">
+                {proposal.targets.map((target, index) => (
+                  <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
+                    <code>
+                      {JSON.stringify(
+                        {
+                          target,
+                          calldata: proposal.calldatas[index],
+                          value: proposal.values[index],
+                          signature: proposal.signatures[index],
+                        },
+                        null,
+                        2
+                      )}
+                    </code>
+                  </pre>
+                ))}
+              </TabsContent>
             </CardContent>
           </Tabs>
         </Card>
