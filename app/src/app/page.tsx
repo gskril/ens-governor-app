@@ -11,7 +11,11 @@ import {
 } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { getProposals } from '@/hooks/useProposals'
-import { formatStartDate, formatVotes } from '@/lib/utils'
+import {
+  bigintToFormattedString,
+  formatTimestamp,
+  getTotalVotes,
+} from '@/lib/utils'
 
 export default async function Home() {
   const proposals = await getProposals()
@@ -34,7 +38,7 @@ export default async function Home() {
             {proposals?.map((proposal) => (
               <TableRow key={proposal.id}>
                 <TableCell className="font-medium">
-                  {formatStartDate(proposal)}
+                  {formatTimestamp(proposal.createdAtTimestamp)}
                 </TableCell>
                 <TableCell>
                   <Link
@@ -48,7 +52,7 @@ export default async function Home() {
                   <ProposalStatus proposal={proposal} />
                 </TableCell>
                 <TableCell className="text-right">
-                  {formatVotes(proposal)}
+                  {bigintToFormattedString(getTotalVotes(proposal))}
                 </TableCell>
               </TableRow>
             ))}

@@ -6,31 +6,27 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatStartDate(proposal: EnhancedProposal) {
-  return new Date(
-    Number(proposal.createdAtTimestamp) * 1000
-  ).toLocaleDateString('en-US', {
+export function formatTimestamp(timestamp: string) {
+  return new Date(Number(timestamp) * 1000).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   })
 }
 
-export function formatVotes(proposal: EnhancedProposal) {
-  const value =
-    (BigInt(proposal.forVotes) +
-      BigInt(proposal.againstVotes) +
-      BigInt(proposal.abstainVotes)) /
-    BigInt(1e18)
-
-  return formatVoteCount(value)
+export function getTotalVotes(proposal: EnhancedProposal) {
+  return (
+    BigInt(proposal.forVotes) +
+    BigInt(proposal.againstVotes) +
+    BigInt(proposal.abstainVotes)
+  )
 }
 
-export function formatVoteCount(count: bigint) {
+export function bigintToFormattedString(count: bigint | string) {
   return new Intl.NumberFormat('en-US', {
     notation: 'compact',
     maximumFractionDigits: 2,
-  }).format(Number(count))
+  }).format(parseVotes(count))
 }
 
 export function truncateAddress(address: string) {
@@ -38,11 +34,11 @@ export function truncateAddress(address: string) {
 }
 
 export function getQuorumProgress(proposal: EnhancedProposal) {
-  const forVotes = BigInt(proposal.forVotes) / BigInt(1e18)
-  const abstainVotes = BigInt(proposal.abstainVotes) / BigInt(1e18)
-  const quorum = Number(BigInt(proposal.quorum) / BigInt(1e18))
+  const forVotes = parseVotes(proposal.forVotes)
+  const abstainVotes = parseVotes(proposal.abstainVotes)
+  const quorum = parseVotes(proposal.quorum)
 
-  const countedVotes = Number(forVotes) + Number(abstainVotes)
+  const countedVotes = forVotes + abstainVotes
   const progress = (countedVotes / quorum) * 100
 
   return Number(progress.toFixed(2))
@@ -52,10 +48,18 @@ export function getPercentageOfTotalVotes(
   numerator: string,
   proposal: EnhancedProposal
 ) {
-  const againstVotes = BigInt(proposal.againstVotes) / BigInt(1e18)
-  const forVotes = BigInt(proposal.forVotes) / BigInt(1e18)
-  const abstainVotes = BigInt(proposal.abstainVotes) / BigInt(1e18)
+  const againstVotes = parseVotes(proposal.againstVotes)
+  const forVotes = parseVotes(proposal.forVotes)
+  const abstainVotes = parseVotes(proposal.abstainVotes)
   const totalVotes = againstVotes + forVotes + abstainVotes
-  const num = BigInt(numerator) / BigInt(1e18)
-  return (Number(num) / Number(totalVotes)) * 100
+  const num = parseVotes(numerator)
+  return (num / totalVotes) * 100
+}
+
+/**
+ * @param votes (Stringified) bigint of the unformatted votes
+ * @returns Votes in a formatted number
+ */
+export function parseVotes(votes: string | bigint): number {
+  return Number(BigInt(votes) / BigInt(1e18))
 }

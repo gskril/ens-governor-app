@@ -21,9 +21,9 @@ import {
 } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import {
+  bigintToFormattedString,
   cn,
-  formatStartDate,
-  formatVoteCount,
+  formatTimestamp,
   getPercentageOfTotalVotes,
   getQuorumProgress,
   truncateAddress,
@@ -69,7 +69,7 @@ export function ProposalPageClient({ proposal }: Props) {
                 {proposerEnsName ?? truncateAddress(proposal.proposer)}
               </a>
             </div>
-            on {formatStartDate(proposal)}
+            on {formatTimestamp(proposal.createdAtTimestamp)}
           </Typography>
         </CardContent>
       </Card>
@@ -174,8 +174,7 @@ export function ProposalPageClient({ proposal }: Props) {
             {/* For votes */}
             <div className="space-y-1">
               <Typography className="text-sm text-zinc-500">
-                For votes:{' '}
-                {formatVoteCount(BigInt(proposal.forVotes) / BigInt(1e18))}
+                For votes: {bigintToFormattedString(proposal.forVotes)}
               </Typography>
               <div className="h-2 overflow-hidden rounded bg-zinc-200">
                 <div
@@ -190,8 +189,7 @@ export function ProposalPageClient({ proposal }: Props) {
             {/* Against votes */}
             <div className="space-y-1">
               <Typography className="text-sm text-zinc-500">
-                Against votes:{' '}
-                {formatVoteCount(BigInt(proposal.againstVotes) / BigInt(1e18))}
+                Against votes: {bigintToFormattedString(proposal.againstVotes)}
               </Typography>
               <div className="h-2 overflow-hidden rounded bg-zinc-200">
                 <div
@@ -254,7 +252,7 @@ function Vote({ vote }: { vote: EnhancedProposalWithVotes['votes'][number] }) {
           </span>
         </div>
 
-        <div>{formatVoteCount(BigInt(vote.weight) / BigInt(1e18))}</div>
+        <div>{bigintToFormattedString(vote.weight)}</div>
       </div>
 
       {vote.reason && (
