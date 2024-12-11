@@ -37,7 +37,7 @@ export function ProposalPageClient({ proposal }: Props) {
   const { data: proposerEnsName } = useEnsName({ address: proposal.proposer })
 
   return (
-    <main className="space-y-6 p-6">
+    <main className="container">
       <Link href="/" className="flex items-center gap-2 font-semibold">
         <ArrowLeft className="size-4" />
         Home

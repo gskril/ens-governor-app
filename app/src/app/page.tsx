@@ -21,7 +21,7 @@ export default async function Home() {
   const proposals = await getProposals()
 
   return (
-    <main className="space-y-6 p-6">
+    <main className="container">
       <Typography as="h1">ENS DAO Proposals</Typography>
 
       <div className="rounded border">
