@@ -1,13 +1,14 @@
 'use client'
 
 import { EnhancedProposalWithVotes } from 'indexer/types'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowDown, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
 
 import { ProposalStatus } from '@/components/ProposalStatus'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -19,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import {
   bigintToFormattedString,
@@ -40,7 +42,7 @@ export function ProposalPageClient({ proposal }: Props) {
     <main className="container">
       <div>
         <Link href="/" className="flex items-center gap-2 font-semibold">
-          <ArrowLeft className="size-4" />
+          <ArrowLeft className="size-5" />
           All Proposals
         </Link>
       </div>
@@ -53,7 +55,8 @@ export function ProposalPageClient({ proposal }: Props) {
           <hr />
 
           <Typography className="mb-2 flex">
-            Proposed by{' '}
+            <span className="hidden sm:block">Proposed by</span>
+            <span className="block sm:hidden">By</span>
             <div className="mx-1.5 flex items-center gap-1">
               {proposerEnsName && (
                 <img
@@ -71,90 +74,126 @@ export function ProposalPageClient({ proposal }: Props) {
                 {proposerEnsName ?? truncateAddress(proposal.proposer)}
               </a>
             </div>
-            on {formatTimestamp(proposal.createdAtTimestamp)}
+            <span className="hidden sm:block">
+              on {formatTimestamp(proposal.createdAtTimestamp)}
+            </span>
           </Typography>
         </CardContent>
       </Card>
 
+      <a
+        href="#votes"
+        className={buttonVariants({
+          variant: 'default',
+          size: 'lg',
+          className: 'w-full lg:hidden',
+        })}
+      >
+        <ArrowDown />
+        Skip to Votes
+      </a>
+
       <div className="grid gap-6 lg:grid-cols-[5fr_2fr]">
         {/* Proposal body */}
-        <Card className="h-fit max-w-full overflow-x-auto">
-          <CardContent className="max-w-full p-6">
-            <ReactMarkdown
-              components={{
-                h1: ({ children }) => (
-                  <Typography as="h1" className="mb-6">
-                    {children}
-                  </Typography>
-                ),
-                h2: ({ children }) => (
-                  <Typography as="h2" className="mb-2">
-                    {children}
-                  </Typography>
-                ),
-                h3: ({ children }) => (
-                  <Typography as="h3">{children}</Typography>
-                ),
-                h4: ({ children }) => (
-                  <Typography as="h4">{children}</Typography>
-                ),
-                h5: ({ children }) => (
-                  <Typography as="h5">{children}</Typography>
-                ),
-                h6: ({ children }) => (
-                  <Typography as="h6">{children}</Typography>
-                ),
-                p: ({ children }) => <Typography as="p">{children}</Typography>,
-                a: ({ children, href }) => (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline"
-                  >
-                    {children}
-                  </a>
-                ),
-                ul: ({ children }) => (
-                  <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-                    {children}
-                  </ul>
-                ),
-                ol: ({ children }) => (
-                  <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">
-                    {children}
-                  </ol>
-                ),
-                table: ({ children }) => (
-                  <div className="my-6 rounded border">
-                    <Table>{children}</Table>
-                  </div>
-                ),
-                thead: ({ children }) => <TableHeader>{children}</TableHeader>,
-                tbody: ({ children }) => <TableBody>{children}</TableBody>,
-                tfoot: ({ children }) => <TableFooter>{children}</TableFooter>,
-                tr: ({ children }) => <TableRow>{children}</TableRow>,
-                th: ({ children }) => <TableHead>{children}</TableHead>,
-                td: ({ children }) => <TableCell>{children}</TableCell>,
-                caption: ({ children }) => (
-                  <TableCaption>{children}</TableCaption>
-                ),
-                hr: () => <hr className="my-6" />,
-                pre: ({ children }) => (
-                  <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
-                    {children}
-                  </pre>
-                ),
-              }}
-              remarkPlugins={[remarkGfm]}
-            >
-              {proposal.description}
-            </ReactMarkdown>
-          </CardContent>
+        <Card className="h-fit overflow-x-auto">
+          <Tabs defaultValue="body">
+            <TabsList className="h-auto w-full justify-start rounded-none p-2">
+              <TabsTrigger className="w-full" value="body">
+                Description
+              </TabsTrigger>
+              <TabsTrigger className="w-full" value="calldata">
+                <span className="hidden lg:block">Executable Code</span>
+                <span className="block lg:hidden">Calldata</span>
+              </TabsTrigger>
+            </TabsList>
+
+            <CardContent>
+              <TabsContent value="body">
+                <ReactMarkdown
+                  components={{
+                    h1: ({ children }) => (
+                      <Typography as="h1" className="mb-6">
+                        {children}
+                      </Typography>
+                    ),
+                    h2: ({ children }) => (
+                      <Typography as="h2" className="mb-2">
+                        {children}
+                      </Typography>
+                    ),
+                    h3: ({ children }) => (
+                      <Typography as="h3">{children}</Typography>
+                    ),
+                    h4: ({ children }) => (
+                      <Typography as="h4">{children}</Typography>
+                    ),
+                    h5: ({ children }) => (
+                      <Typography as="h5">{children}</Typography>
+                    ),
+                    h6: ({ children }) => (
+                      <Typography as="h6">{children}</Typography>
+                    ),
+                    p: ({ children }) => (
+                      <Typography as="p">{children}</Typography>
+                    ),
+                    a: ({ children, href }) => (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="underline"
+                      >
+                        {children}
+                      </a>
+                    ),
+                    ul: ({ children }) => (
+                      <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+                        {children}
+                      </ul>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">
+                        {children}
+                      </ol>
+                    ),
+                    table: ({ children }) => (
+                      <div className="my-6 rounded border">
+                        <Table>{children}</Table>
+                      </div>
+                    ),
+                    thead: ({ children }) => (
+                      <TableHeader>{children}</TableHeader>
+                    ),
+                    tbody: ({ children }) => <TableBody>{children}</TableBody>,
+                    tfoot: ({ children }) => (
+                      <TableFooter>{children}</TableFooter>
+                    ),
+                    tr: ({ children }) => <TableRow>{children}</TableRow>,
+                    th: ({ children }) => <TableHead>{children}</TableHead>,
+                    td: ({ children }) => <TableCell>{children}</TableCell>,
+                    caption: ({ children }) => (
+                      <TableCaption>{children}</TableCaption>
+                    ),
+                    hr: () => <hr className="my-6" />,
+                    pre: ({ children }) => (
+                      <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
+                        {children}
+                      </pre>
+                    ),
+                  }}
+                  remarkPlugins={[remarkGfm]}
+                >
+                  {proposal.description}
+                </ReactMarkdown>
+              </TabsContent>
+
+              <TabsContent value="calldata"></TabsContent>
+            </CardContent>
+          </Tabs>
         </Card>
 
         {/* Votes */}
-        <Card className="sticky top-6 h-fit">
+        <Card className="sticky top-6 h-fit" id="votes">
           <CardHeader className="space-y-2">
             <CardTitle>Votes</CardTitle>
 
