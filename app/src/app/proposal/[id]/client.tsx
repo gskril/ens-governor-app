@@ -93,7 +93,7 @@ export function ProposalPageClient({ proposal }: Props) {
         Skip to Votes
       </a>
 
-      <div className="grid gap-6 lg:grid-cols-[5fr_2fr]">
+      <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card className="h-fit overflow-x-auto">
           <Tabs defaultValue="body">
             <TabsList className="h-auto w-full justify-start rounded-none p-2">
