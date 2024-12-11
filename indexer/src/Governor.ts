@@ -69,6 +69,9 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
     forVotes: 0n,
     againstVotes: 0n,
     abstainVotes: 0n,
+    createTransaction: event.transaction.hash,
+
+    // Format raw args
     values: replaceBigInts(event.args.values, (v) => String(v)),
     description: removeTitle(event.args.description),
   })
@@ -79,10 +82,12 @@ ponder.on('Governor:ProposalExecuted', async ({ event, context }) => {
     ...event.args,
     id: event.log.id,
     timestamp: event.block.timestamp,
+    transaction: event.transaction.hash,
   })
 
   await context.db.update(proposal, { id: event.args.proposalId }).set({
     executedAtTimestamp: event.block.timestamp,
+    executeTransaction: event.transaction.hash,
   })
 })
 
@@ -120,6 +125,7 @@ ponder.on('Governor:VoteCast', async ({ event, context }) => {
     ...event.args,
     id: event.log.id,
     timestamp: event.block.timestamp,
+    transaction: event.transaction.hash,
   })
 
   if (event.args.support === 0) {

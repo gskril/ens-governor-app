@@ -14,6 +14,8 @@ export const proposal = onchainTable('proposal', (t) => ({
   forVotes: t.bigint().notNull(),
   againstVotes: t.bigint().notNull(),
   abstainVotes: t.bigint().notNull(),
+  createTransaction: t.hex().notNull(),
+  executeTransaction: t.hex(),
 
   // Raw from contract
   proposer: t.hex().notNull(),
@@ -61,6 +63,7 @@ export const proposalExecutedEvent = onchainTable(
   (t) => ({
     id: t.text().primaryKey(),
     timestamp: t.bigint().notNull(),
+    transaction: t.hex().notNull(),
     proposalId: t.bigint().notNull(),
   })
 )
@@ -92,6 +95,7 @@ export const timelockChangeEvent = onchainTable('timelockChangeEvent', (t) => ({
 export const voteCastEvent = onchainTable('voteCastEvent', (t) => ({
   id: t.text().primaryKey(),
   timestamp: t.bigint().notNull(),
+  transaction: t.hex().notNull(),
   voter: t.hex().notNull(),
   proposalId: t.bigint().notNull(),
   support: t.integer().notNull(),

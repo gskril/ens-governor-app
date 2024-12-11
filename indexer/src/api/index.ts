@@ -3,7 +3,6 @@ import { replaceBigInts } from '@ponder/utils'
 
 import { ponder } from '@/generated'
 
-import { EnhancedProposal } from '../types'
 import { getPropQuorumReached } from '../utils'
 import { getPropStatus } from '../utils'
 
@@ -46,7 +45,7 @@ ponder.get('/proposals/:proposalId', async (c) => {
   const status = getPropStatus(prop)
   const quorumReached = getPropQuorumReached(prop)
 
-  const enhancedProposal: EnhancedProposal = replaceBigInts(
+  const enhancedProposal = replaceBigInts(
     {
       status,
       quorumReached,
