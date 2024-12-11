@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
 
+import { ConnectButton } from '@/components/ConnectButton'
 import { Footer } from '@/components/Footer'
 import { ProposalStatus } from '@/components/ProposalStatus'
 import { buttonVariants } from '@/components/ui/button'
@@ -41,11 +42,13 @@ export function ProposalPageClient({ proposal }: Props) {
 
   return (
     <div className="container">
-      <div>
-        <Link href="/" className="flex items-center gap-2 font-semibold">
+      <div className="flex items-center justify-between">
+        <Link href="/" className="flex w-fit items-center gap-2 font-semibold">
           <ArrowLeft className="size-5" />
           All Proposals
         </Link>
+
+        <ConnectButton />
       </div>
 
       <Card>
