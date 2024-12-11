@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
 
 import { ProposalStatus } from '@/components/ProposalStatus'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -190,19 +190,27 @@ export function ProposalPageClient({ proposal }: Props) {
               {/* Executable code */}
               <TabsContent value="calldata">
                 {proposal.targets.map((target, index) => (
-                  <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
-                    <code>
-                      {JSON.stringify(
-                        {
-                          target,
-                          calldata: proposal.calldatas[index],
-                          value: proposal.values[index],
-                          signature: proposal.signatures[index],
-                        },
-                        null,
-                        2
+                  <pre
+                    key={index}
+                    className="bg-muted my-6 block max-w-full whitespace-pre-wrap break-all rounded-md p-4"
+                  >
+                    <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6">
+                      <div>target:</div>
+                      <div>{target}</div>
+
+                      <div>calldata:</div>
+                      <div>{proposal.calldatas[index]}</div>
+
+                      <div>value:</div>
+                      <div>{proposal.values[index]}</div>
+
+                      {proposal.signatures[index] && (
+                        <>
+                          <div>signature:</div>
+                          <div>{proposal.signatures[index]}</div>
+                        </>
                       )}
-                    </code>
+                    </div>
                   </pre>
                 ))}
               </TabsContent>
