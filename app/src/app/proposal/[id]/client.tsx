@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
 
+import { Footer } from '@/components/Footer'
 import { ProposalStatus } from '@/components/ProposalStatus'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -39,7 +40,7 @@ export function ProposalPageClient({ proposal }: Props) {
   const { data: proposerEnsName } = useEnsName({ address: proposal.proposer })
 
   return (
-    <main className="container">
+    <div className="container">
       <div>
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <ArrowLeft className="size-5" />
@@ -134,7 +135,9 @@ export function ProposalPageClient({ proposal }: Props) {
                       <Typography as="h6">{children}</Typography>
                     ),
                     p: ({ children }) => (
-                      <Typography as="p">{children}</Typography>
+                      <Typography as="p" className="break-words">
+                        {children}
+                      </Typography>
                     ),
                     a: ({ children, href }) => (
                       <a
@@ -160,6 +163,9 @@ export function ProposalPageClient({ proposal }: Props) {
                       <div className="my-6 rounded border">
                         <Table>{children}</Table>
                       </div>
+                    ),
+                    li: ({ children }) => (
+                      <li className="break-words">{children}</li>
                     ),
                     thead: ({ children }) => (
                       <TableHeader>{children}</TableHeader>
@@ -275,7 +281,9 @@ export function ProposalPageClient({ proposal }: Props) {
           </CardContent>
         </Card>
       </div>
-    </main>
+
+      <Footer />
+    </div>
   )
 }
 

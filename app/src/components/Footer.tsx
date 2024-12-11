@@ -6,7 +6,7 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="flex justify-center gap-3">
+    <footer className="flex justify-center gap-3 text-zinc-600">
       {links.map(({ href, label }, idx) => (
         <>
           <a
@@ -17,7 +17,7 @@ export function Footer() {
             {label}
           </a>
 
-          {idx < links.length - 1 && <span className="text-zinc-500">/</span>}
+          {idx < links.length - 1 && <span>/</span>}
         </>
       ))}
     </footer>
