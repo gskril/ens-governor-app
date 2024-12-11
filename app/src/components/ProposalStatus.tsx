@@ -2,7 +2,11 @@ import { EnhancedProposal } from 'indexer/types'
 
 import { Badge, BadgeProps } from './ui/badge'
 
-export function ProposalStatus({ proposal }: { proposal: EnhancedProposal }) {
+type Props = {
+  proposal: EnhancedProposal
+} & React.HTMLAttributes<HTMLDivElement>
+
+export function ProposalStatus({ proposal, className }: Props) {
   let variant: BadgeProps['variant'] = 'default'
 
   const successBadge: EnhancedProposal['status'][] = ['succeeded', 'executed']
@@ -14,5 +18,9 @@ export function ProposalStatus({ proposal }: { proposal: EnhancedProposal }) {
     variant = 'destructive'
   }
 
-  return <Badge variant={variant}>{proposal.status.toUpperCase()}</Badge>
+  return (
+    <Badge variant={variant} className={className}>
+      {proposal.status.toUpperCase()}
+    </Badge>
+  )
 }

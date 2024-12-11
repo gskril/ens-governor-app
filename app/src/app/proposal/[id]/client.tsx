@@ -38,10 +38,12 @@ export function ProposalPageClient({ proposal }: Props) {
 
   return (
     <main className="container">
-      <Link href="/" className="flex items-center gap-2 font-semibold">
-        <ArrowLeft className="size-4" />
-        Home
-      </Link>
+      <div>
+        <Link href="/" className="flex items-center gap-2 font-semibold">
+          <ArrowLeft className="size-4" />
+          All Proposals
+        </Link>
+      </div>
 
       <Card>
         <CardContent className="space-y-4 p-6">
@@ -216,9 +218,9 @@ function Vote({ vote }: { vote: EnhancedProposalWithVotes['votes'][number] }) {
   const { data: ensName } = useEnsName({ address: vote.voter })
 
   return (
-    <div key={vote.id} className="space-y-1.5 text-sm">
+    <div key={vote.id} className="space-y-1.5 text-sm font-medium">
       <div className="flex w-full justify-between gap-4">
-        <div className="flex items-center">
+        <div className="flex items-center gap-1">
           <img
             src={
               ensName
@@ -229,10 +231,13 @@ function Vote({ vote }: { vote: EnhancedProposalWithVotes['votes'][number] }) {
             className="size-6 rounded-full object-cover"
           />
           <a
-            href={`https://etherscan.io/address/${vote.voter}`}
+            href={
+              ensName
+                ? `https://app.ens.domains/${ensName}`
+                : `https://etherscan.io/address/${vote.voter}`
+            }
             target="_blank"
             rel="noreferrer"
-            className="ml-1.5 mr-1"
           >
             {ensName ?? truncateAddress(vote.voter)}
           </a>
