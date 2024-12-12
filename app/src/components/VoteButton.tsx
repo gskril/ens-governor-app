@@ -2,7 +2,6 @@
 
 import { GovernorContract } from 'indexer/contracts'
 import { EnhancedProposal } from 'indexer/types'
-import { revalidatePath } from 'next/cache'
 import { useEffect } from 'react'
 import {
   useAccount,
@@ -26,6 +25,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
+import revalidateProposal from '@/lib/actions'
 import { bigintToFormattedString } from '@/lib/utils'
 
 export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
@@ -60,7 +60,7 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
   useEffect(() => {
     if (receipt.isSuccess) {
       multicall.refetch()
-      revalidatePath(`/proposal/${proposal.id}`)
+      revalidateProposal(proposal.id)
     }
   }, [receipt.isSuccess])
 
