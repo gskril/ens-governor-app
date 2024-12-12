@@ -1,7 +1,8 @@
 const links = [
   { href: 'https://ens.domains', label: 'ENS' },
-  { href: 'https://docs/ens.domains/dao', label: 'Documentation' },
-  { href: 'https://x.com/ensdomains', label: 'Twitter' },
+  { href: 'https://docs/ens.domains/dao', label: 'Governance Docs' },
+  { href: 'https://x.com/ENS_DAO', label: 'Twitter' },
+  { href: 'https://github.com/gskril/ens-governor-app', label: 'GitHub' },
 ]
 
 export function Footer() {
