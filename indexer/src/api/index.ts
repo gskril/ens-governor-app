@@ -10,7 +10,7 @@ ponder.use('/', graphql())
 
 ponder.get('/proposals', async (c) => {
   const props = await c.db.query.proposal.findMany({
-    limit: 15,
+    limit: 50,
     orderBy: (table, { desc }) => [desc(table.createdAtBlock)],
   })
 
