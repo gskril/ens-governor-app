@@ -20,33 +20,21 @@ export function removeTitle(description: string) {
   return description.slice(firstHeading?.raw.length)
 }
 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/Governor.sol#L138
 export function getPropStatus(prop: typeof proposal.$inferSelect): Status {
   const currentTimestamp = new Date().getTime() / 1000
 
-  if (
-    prop.startTimestamp <= currentTimestamp &&
-    prop.endTimestamp >= currentTimestamp
-  ) {
-    return 'active'
-  } else if (prop.startTimestamp > currentTimestamp) {
-    return 'pending'
-  } else if (prop.endTimestamp < currentTimestamp) {
-    if (prop.executedAtTimestamp) {
-      return 'executed'
-    } else if (prop.canceledAtTimestamp) {
-      return 'canceled'
-    } else if (prop.queuedAtTimestamp) {
-      return 'queued'
-    } else {
-      if (prop.forVotes > prop.againstVotes && getPropQuorumReached(prop)) {
-        return 'succeeded'
-      } else {
-        return 'defeated'
-      }
-    }
-  } else {
-    return 'queued'
-  }
+  if (prop.executedAtTimestamp) return 'executed'
+  if (prop.canceledAtTimestamp) return 'canceled'
+  if (prop.queuedAtTimestamp) return 'queued'
+  if (prop.startTimestamp > currentTimestamp) return 'pending'
+  if (prop.endTimestamp >= currentTimestamp) return 'active'
+
+  const quorumReached = getPropQuorumReached(prop)
+  const positiveVote = prop.forVotes > prop.againstVotes
+
+  if (positiveVote && quorumReached) return 'succeeded'
+  return 'defeated'
 }
 
 export function getPropQuorumReached(prop: typeof proposal.$inferSelect) {

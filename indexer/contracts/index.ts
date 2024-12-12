@@ -1,1 +1,1 @@
-export * from './GovernorAbi'
+export * from './Governor'

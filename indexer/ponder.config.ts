@@ -14,7 +14,6 @@ export default createConfig({
     Governor: {
       ...GovernorContract,
       network: 'mainnet',
-      startBlock: 13533772,
     },
   },
 })

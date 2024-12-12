@@ -1,5 +1,6 @@
 export const GovernorContract = {
   address: '0x323A76393544d5ecca80cd6ef2A560C6a395b7E3',
+  startBlock: 13533772, // When the contract was deployed, so Ponder knows where to start indexing
   abi: [
     {
       inputs: [
