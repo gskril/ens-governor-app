@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { truncateAddress } from '@/lib/utils'
+import { cn, truncateAddress } from '@/lib/utils'
 
 export function ConnectButton() {
   const { openConnectModal } = useConnectModal()
@@ -23,11 +23,10 @@ export function ConnectButton() {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger
-          className={buttonVariants({
-            size: 'sm',
-            className:
-              'h-fit !gap-1.5 !rounded-full bg-primary pb-1 pl-1 pr-4 pt-1 text-primary-foreground hover:bg-primary/90',
-          })}
+          className={cn(
+            buttonVariants({}),
+            'h-fit gap-1.5 rounded-full bg-primary pb-1 pl-1 pr-4 pt-1 text-primary-foreground hover:bg-primary/90'
+          )}
         >
           <img
             src={
