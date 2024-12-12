@@ -118,7 +118,7 @@ export function ProposalPageClient({ proposal }: Props) {
               </TabsTrigger>
             </TabsList>
 
-            <CardContent className="py-2">
+            <CardContent className="pb-4 pt-2">
               {/* Proposal body */}
               <TabsContent value="body">
                 <ReactMarkdown
