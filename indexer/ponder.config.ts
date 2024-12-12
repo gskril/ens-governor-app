@@ -1,7 +1,7 @@
 import { createConfig } from '@ponder/core'
 import { http } from 'viem'
 
-import { GovernorAbi } from './abis'
+import { GovernorContract } from './contracts'
 
 export default createConfig({
   networks: {
@@ -12,8 +12,7 @@ export default createConfig({
   },
   contracts: {
     Governor: {
-      abi: GovernorAbi,
-      address: '0x323A76393544d5ecca80cd6ef2A560C6a395b7E3',
+      ...GovernorContract,
       network: 'mainnet',
       startBlock: 13533772,
     },

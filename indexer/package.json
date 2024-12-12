@@ -30,6 +30,6 @@
   },
   "exports": {
     "./types": "./src/types.ts",
-    "./abis": "./abis/index.ts"
+    "./contracts": "./contracts/index.ts"
   }
 }
