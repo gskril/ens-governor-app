@@ -18,6 +18,9 @@ import {
   getTotalVotes,
 } from '@/lib/utils'
 
+// Invalidate the cache when a request comes in, at most once every 10 seconds.
+export const revalidate = 10
+
 export default async function Home() {
   const proposals = await getProposals()
 

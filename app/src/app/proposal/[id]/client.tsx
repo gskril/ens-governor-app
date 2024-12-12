@@ -185,7 +185,7 @@ export function ProposalPageClient({ proposal }: Props) {
                     ),
                     hr: () => <hr className="my-6" />,
                     pre: ({ children }) => (
-                      <pre className="bg-muted my-6 max-w-full overflow-x-auto rounded-md p-4">
+                      <pre className="my-6 max-w-full overflow-x-auto rounded-md bg-muted p-4">
                         {children}
                       </pre>
                     ),
@@ -201,7 +201,7 @@ export function ProposalPageClient({ proposal }: Props) {
                 {proposal.targets.map((target, index) => (
                   <pre
                     key={index}
-                    className="bg-muted my-6 block max-w-full whitespace-pre-wrap break-all rounded-md p-4"
+                    className="my-6 block max-w-full whitespace-pre-wrap break-all rounded-md bg-muted p-4"
                   >
                     <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6">
                       <div>target:</div>
@@ -269,7 +269,7 @@ export function ProposalPageClient({ proposal }: Props) {
               </Typography>
               <div className="h-2 overflow-hidden rounded bg-zinc-200">
                 <div
-                  className="bg-destructive h-full rounded"
+                  className="h-full rounded bg-destructive"
                   style={{
                     width: `${getPercentageOfTotalVotes(proposal.againstVotes, proposal)}%`,
                   }}
