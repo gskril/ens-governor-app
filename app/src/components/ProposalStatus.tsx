@@ -1,5 +1,7 @@
 import { EnhancedProposal } from 'indexer/types'
 
+import { cn } from '@/lib/utils'
+
 import { Badge, BadgeProps } from './ui/badge'
 
 type Props = {
@@ -19,7 +21,7 @@ export function ProposalStatus({ proposal, className }: Props) {
   }
 
   return (
-    <Badge variant={variant} className={className}>
+    <Badge variant={variant} className={cn('w-fit', className)}>
       {proposal.status.toUpperCase()}
     </Badge>
   )

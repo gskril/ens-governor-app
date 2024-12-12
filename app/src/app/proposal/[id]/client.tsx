@@ -10,6 +10,8 @@ import { useEnsName } from 'wagmi'
 import { ConnectButton } from '@/components/ConnectButton'
 import { Footer } from '@/components/Footer'
 import { ProposalStatus } from '@/components/ProposalStatus'
+import { ProposalVote } from '@/components/ProposalVote'
+import { VoteButton } from '@/components/VoteButton'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -52,36 +54,42 @@ export function ProposalPageClient({ proposal }: Props) {
       </div>
 
       <Card>
-        <CardContent className="space-y-4 p-6">
+        <CardContent className="flex flex-col gap-4 p-6 pb-4">
           <ProposalStatus proposal={proposal} />
-          <Typography as="h1">{proposal.title}</Typography>
+          <Typography as="h1" className="mb-2">
+            {proposal.title}
+          </Typography>
 
           <hr />
 
-          <Typography className="mb-2 flex">
-            <span className="hidden sm:block">Proposed by</span>
-            <span className="block sm:hidden">By</span>
-            <div className="mx-1.5 flex items-center gap-1">
-              {proposerEnsName && (
-                <img
-                  src={`https://ens-api.gregskril.com/avatar/${proposerEnsName}?width=48`}
-                  alt={proposerEnsName}
-                  className="size-6 rounded-full object-cover"
-                />
-              )}
-              <a
-                href={`https://etherscan.io/address/${proposal.proposer}`}
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                {proposerEnsName ?? truncateAddress(proposal.proposer)}
-              </a>
-            </div>
-            <span className="hidden sm:block">
-              on {formatTimestamp(proposal.createdAtTimestamp)}
-            </span>
-          </Typography>
+          <div className="flex flex-col justify-between gap-4 sm:flex-row">
+            <Typography className="flex items-center">
+              <span className="hidden sm:block">Proposed by</span>
+              <span className="block sm:hidden">By</span>
+              <div className="mx-1.5 flex items-center gap-1">
+                {proposerEnsName && (
+                  <img
+                    src={`https://ens-api.gregskril.com/avatar/${proposerEnsName}?width=48`}
+                    alt={proposerEnsName}
+                    className="size-6 rounded-full object-cover"
+                  />
+                )}
+                <a
+                  href={`https://etherscan.io/address/${proposal.proposer}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  {proposerEnsName ?? truncateAddress(proposal.proposer)}
+                </a>
+              </div>
+              <span className="hidden sm:block">
+                on {formatTimestamp(proposal.createdAtTimestamp)}
+              </span>
+            </Typography>
+
+            {proposal.status === 'active' && <VoteButton proposal={proposal} />}
+          </div>
         </CardContent>
       </Card>
 
@@ -279,68 +287,13 @@ export function ProposalPageClient({ proposal }: Props) {
           </CardHeader>
           <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {
-              return <Vote key={vote.id} vote={vote} />
+              return <ProposalVote key={vote.id} vote={vote} />
             })}
           </CardContent>
         </Card>
       </div>
 
       <Footer />
-    </div>
-  )
-}
-
-function Vote({ vote }: { vote: EnhancedProposalWithVotes['votes'][number] }) {
-  const { data: ensName } = useEnsName({ address: vote.voter })
-
-  return (
-    <div key={vote.id} className="space-y-1.5 text-sm font-medium">
-      <div className="flex w-full justify-between gap-4">
-        <div className="flex items-center gap-1">
-          <img
-            src={
-              ensName
-                ? `https://ens-api.gregskril.com/avatar/${ensName}?width=48`
-                : '/img/fallback-avatar.svg'
-            }
-            alt={ensName ?? truncateAddress(vote.voter)}
-            className="size-6 rounded-full object-cover"
-          />
-          <a
-            href={
-              ensName
-                ? `https://app.ens.domains/${ensName}`
-                : `https://etherscan.io/address/${vote.voter}`
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
-            {ensName ?? truncateAddress(vote.voter)}
-          </a>
-          <span
-            className={cn(
-              vote.support === 0 && 'text-destructive',
-              vote.support === 1 && 'text-green-600',
-              vote.support === 2 && 'text-zinc-500',
-              'font-medium'
-            )}
-          >
-            {vote.support === 0
-              ? 'voted against'
-              : vote.support === 1
-                ? 'voted for'
-                : 'abstained'}
-          </span>
-        </div>
-
-        <div>{bigintToFormattedString(vote.weight)}</div>
-      </div>
-
-      {vote.reason && (
-        <Typography as="span" className="block text-zinc-600">
-          {vote.reason}
-        </Typography>
-      )}
     </div>
   )
 }
