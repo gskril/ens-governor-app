@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { EnhancedProposal, EnhancedProposalWithVotes } from 'indexer/types'
+import { EnhancedProposalWithVotes } from 'indexer/types'
 
 export function useProposal(id: string) {
   return useQuery({
