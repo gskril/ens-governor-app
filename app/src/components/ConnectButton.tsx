@@ -3,7 +3,13 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useAccount, useDisconnect, useEnsName } from 'wagmi'
 
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { truncateAddress } from '@/lib/utils'
 
 export function ConnectButton() {
@@ -15,28 +21,36 @@ export function ConnectButton() {
 
   if (address) {
     return (
-      <Button
-        size="sm"
-        className="h-auto rounded-full p-0.5 pr-3 font-semibold"
-        onClick={() => disconnect()}
-      >
-        <img
-          src={
-            ensName
-              ? `https://ens-api.gregskril.com/avatar/${ensName}?width=64`
-              : '/img/fallback-avatar.svg'
-          }
-          alt={ensName ?? truncateAddress(address)}
-          className="size-8 rounded-full object-cover"
-        />
-
-        {ensName ?? truncateAddress(address)}
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className={buttonVariants({
+            size: 'sm',
+            className:
+              'h-fit !gap-1.5 !rounded-full bg-primary pb-1 pl-1 pr-4 pt-1 text-primary-foreground hover:bg-primary/90',
+          })}
+        >
+          <img
+            src={
+              ensName
+                ? `https://ens-api.gregskril.com/avatar/${ensName}?width=64`
+                : '/img/fallback-avatar.svg'
+            }
+            alt={ensName ?? truncateAddress(address)}
+            className="size-8 rounded-full object-cover"
+          />
+          {ensName ?? truncateAddress(address)}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => disconnect()}>
+            Disconnect
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     )
   }
 
   return (
-    <Button size="sm" className="rounded-full px-4" onClick={openConnectModal}>
+    <Button className="rounded-full px-4" onClick={openConnectModal}>
       Connect Wallet
     </Button>
   )
