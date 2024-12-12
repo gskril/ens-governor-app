@@ -1,7 +1,7 @@
 import { createConfig } from '@ponder/core'
 import { http } from 'viem'
 
-import { GovernorAbi } from './abis/GovernorAbi'
+import { GovernorAbi } from './abis'
 
 export default createConfig({
   networks: {

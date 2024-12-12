@@ -29,6 +29,7 @@
     "node": ">=18.14"
   },
   "exports": {
-    "./types": "./src/types.ts"
+    "./types": "./src/types.ts",
+    "./abis": "./abis/index.ts"
   }
 }
