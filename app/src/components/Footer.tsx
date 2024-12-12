@@ -11,6 +11,7 @@ export function Footer() {
       {links.map(({ href, label }, idx) => (
         <>
           <a
+            key={href}
             href={href}
             target="_blank"
             className="font-medium hover:underline"
