@@ -1,4 +1,5 @@
 import { replaceBigInts } from '@ponder/utils'
+import { keccak256, toHex } from 'viem/utils'
 
 import { ponder } from '@/generated'
 
@@ -49,8 +50,7 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
   // Minimum number of cast voted required for a proposal to be successful
   const quorum = await context.client.readContract({
     ...context.contracts.Governor,
-    functionName: 'quorum',
-    args: [event.block.number - 1n],
+    functionName: 'quorumVotes',
   })
 
   // Assume 12 second block time
@@ -70,6 +70,7 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
     againstVotes: 0n,
     abstainVotes: 0n,
     createTransaction: event.transaction.hash,
+    descriptionHash: keccak256(toHex(event.args.description)),
 
     // Format raw args
     values: replaceBigInts(event.args.values, (v) => String(v)),
