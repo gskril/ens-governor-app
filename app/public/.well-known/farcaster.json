@@ -1,0 +1,15 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjM0NywidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweEI0RjE5NWU5QTk4MkMyYkE1ODk4OENiMjEzMjU1NzM3OGU5RTZiMDgifQ",
+    "payload": "eyJkb21haW4iOiJkYW8uZW5zLmdyZWdza3JpbC5jb20ifQ",
+    "signature": "MHhjYjNhZTE1MDUxODg5ZmY3NjQ0YjkxNTMxY2NlNWQ4MGIxNWUwZDI5NTgzODRkYTBmMjZiZDBkYjYxYWJmOTA4MDhjNzJkNzVmMzA5ZTFiZTk1NjUyYWQzNjkxZjNmMmY4NzJhZTk3ZDRjNzI4M2E0MjdkMDkxNzcxZjljZTc3NjFi"
+  },
+  "frame": {
+    "name": "ENS DAO Governance",
+    "version": "0.0.1",
+    "iconUrl": "https://dao.ens.gregskril.com/img/logo.svg",
+    "homeUrl": "https://dao.ens.gregskril.com",
+    "splashImageUrl": "https://dao.ens.gregskril.com/img/logo.svg",
+    "splashBackgroundColor": "#fafafa"
+  }
+}

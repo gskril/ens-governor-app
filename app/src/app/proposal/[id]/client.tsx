@@ -29,7 +29,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import {
   bigintToFormattedString,
-  cn,
   formatTimestamp,
   getPercentageOfTotalVotes,
   getQuorumProgress,
