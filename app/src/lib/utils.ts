@@ -6,12 +6,33 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatTimestamp(timestamp: string) {
-  return new Date(Number(timestamp) * 1000).toLocaleDateString('en-US', {
-    year: 'numeric',
+export function formatTimestamp(
+  timestamp: string,
+  options: { includeTime?: boolean; includeYear?: boolean } = {
+    includeTime: false,
+    includeYear: true,
+  }
+) {
+  const date = new Date(Number(timestamp) * 1000)
+  const isCurrentYear = date.getFullYear() === new Date().getFullYear()
+
+  const base = date.toLocaleDateString('en-US', {
+    year: options?.includeYear && !isCurrentYear ? 'numeric' : undefined,
     month: 'short',
     day: 'numeric',
   })
+
+  const time = date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: 'short',
+  })
+
+  if (options?.includeTime) {
+    return `${base} at ${time}`
+  }
+
+  return base
 }
 
 export function getTotalVotes(proposal: EnhancedProposal) {

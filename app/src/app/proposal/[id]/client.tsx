@@ -55,7 +55,14 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <Card>
         <CardContent className="flex flex-col gap-4 p-6 pb-4">
-          <ProposalStatus proposal={proposal} />
+          <div className="flex items-center gap-2">
+            <ProposalStatus proposal={proposal} />
+            <Typography className="text-sm text-zinc-500">
+              Ends{' '}
+              {formatTimestamp(proposal.endTimestamp, { includeTime: true })}
+            </Typography>
+          </div>
+
           <Typography as="h1" className="mb-2">
             {proposal.title}
           </Typography>

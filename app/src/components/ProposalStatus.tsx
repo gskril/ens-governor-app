@@ -9,7 +9,7 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 export function ProposalStatus({ proposal, className }: Props) {
-  let variant: BadgeProps['variant'] = 'default'
+  let variant: BadgeProps['variant'] = 'primary'
 
   const successBadge: EnhancedProposal['status'][] = ['succeeded', 'executed']
   const failedBadge: EnhancedProposal['status'][] = ['canceled', 'defeated']
