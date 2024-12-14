@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { ClientProviders } from '@/components/ClientProviders'
+import { ClientProviders } from '@/components/providers/ClientProviders'
 
 import './globals.css'
 
