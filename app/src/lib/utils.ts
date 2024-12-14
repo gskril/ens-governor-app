@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { EnhancedProposal } from 'indexer/types'
 import { twMerge } from 'tailwind-merge'
+import { Address } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -50,8 +51,19 @@ export function bigintToFormattedString(count: bigint | string) {
   }).format(parseVotes(count))
 }
 
-export function truncateAddress(address: string) {
+function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
+}
+
+export function nameWithFallback(
+  name: string | undefined | null,
+  address: Address
+) {
+  if (name) {
+    return name.length > 25 ? `${name.slice(0, 25)}...` : name
+  }
+
+  return truncateAddress(address)
 }
 
 export function getQuorumProgress(proposal: EnhancedProposal) {

@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { cn, truncateAddress } from '@/lib/utils'
+import { cn, nameWithFallback } from '@/lib/utils'
 
 export function ConnectButton() {
   const { openConnectModal } = useConnectModal()
@@ -34,10 +34,10 @@ export function ConnectButton() {
                 ? `https://ens-api.gregskril.com/avatar/${ensName}?width=64`
                 : '/img/fallback-avatar.svg'
             }
-            alt={ensName ?? truncateAddress(address)}
+            alt={nameWithFallback(ensName, address)}
             className="size-8 rounded-full object-cover"
           />
-          {ensName ?? truncateAddress(address)}
+          {nameWithFallback(ensName, address)}
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem onClick={() => disconnect()}>

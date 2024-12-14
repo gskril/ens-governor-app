@@ -3,8 +3,7 @@
 import { EnhancedProposalWithVotes } from 'indexer/types'
 import { useEnsName } from 'wagmi'
 
-import { bigintToFormattedString, cn } from '@/lib/utils'
-import { truncateAddress } from '@/lib/utils'
+import { bigintToFormattedString, cn, nameWithFallback } from '@/lib/utils'
 
 import { Typography } from './ui/typography'
 
@@ -23,7 +22,7 @@ export function ProposalVote({ vote }: Props) {
                 ? `https://ens-api.gregskril.com/avatar/${ensName}?width=48`
                 : '/img/fallback-avatar.svg'
             }
-            alt={ensName ?? truncateAddress(vote.voter)}
+            alt={nameWithFallback(ensName, vote.voter)}
             className="size-6 rounded-full object-cover"
           />
           <a
@@ -35,7 +34,7 @@ export function ProposalVote({ vote }: Props) {
             target="_blank"
             rel="noreferrer"
           >
-            {ensName ?? truncateAddress(vote.voter)}
+            {nameWithFallback(ensName, vote.voter)}
           </a>
           <span
             className={cn(

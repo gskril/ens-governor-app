@@ -32,7 +32,7 @@ import {
   formatTimestamp,
   getPercentageOfTotalVotes,
   getQuorumProgress,
-  truncateAddress,
+  nameWithFallback,
 } from '@/lib/utils'
 
 type Props = {
@@ -47,7 +47,8 @@ export function ProposalPageClient({ proposal }: Props) {
       <div className="flex items-center justify-between">
         <Link href="/" className="flex w-fit items-center gap-2 font-semibold">
           <ArrowLeft className="size-5" />
-          All Proposals
+          <span className="hidden sm:block">All Proposals</span>
+          <span className="block sm:hidden">Home</span>
         </Link>
 
         <ConnectButton />
@@ -87,7 +88,7 @@ export function ProposalPageClient({ proposal }: Props) {
                   rel="noreferrer"
                   className="underline"
                 >
-                  {proposerEnsName ?? truncateAddress(proposal.proposer)}
+                  {nameWithFallback(proposerEnsName, proposal.proposer)}
                 </a>
               </div>
               <span className="hidden sm:block">
