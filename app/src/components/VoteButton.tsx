@@ -87,7 +87,7 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
 
   if (!address) {
     return (
-      <Button className="bg-primary-brand font-bold" disabled>
+      <Button variant="primary" className="font-bold" disabled>
         Connect to Vote
       </Button>
     )
