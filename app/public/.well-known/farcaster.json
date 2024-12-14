@@ -7,9 +7,9 @@
   "frame": {
     "name": "ENS DAO Governance",
     "version": "0.0.1",
-    "iconUrl": "https://dao.ens.gregskril.com/img/logo.svg",
+    "iconUrl": "https://dao.ens.gregskril.com/img/logo-square.svg",
     "homeUrl": "https://dao.ens.gregskril.com",
-    "splashImageUrl": "https://dao.ens.gregskril.com/img/logo.svg",
+    "splashImageUrl": "https://dao.ens.gregskril.com/img/logo-square.svg",
     "splashBackgroundColor": "#fafafa"
   }
 }

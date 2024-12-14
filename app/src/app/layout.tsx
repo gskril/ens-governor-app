@@ -7,12 +7,34 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
+const BASE_URL = 'https://dao.ens.gregskril.com'
+
 export const metadata: Metadata = {
   title: {
     template: 'ENS DAO | %s',
     absolute: 'ENS DAO Proposals',
   },
+  openGraph: {
+    images: [{ url: '/img/opengraph.jpg' }],
+  },
   description: 'View and participate in the governance of ENS DAO',
+  metadataBase: new URL(BASE_URL),
+  other: {
+    'fc:frame': JSON.stringify({
+      version: 'next',
+      imageUrl: `${BASE_URL}/img/opengraph.jpg`,
+      button: {
+        title: 'View Proposals',
+        action: {
+          type: 'launch_frame',
+          name: 'ENS DAO Governance',
+          url: `${BASE_URL}`,
+          splashImageUrl: `${BASE_URL}/img/logo-square.svg`,
+          splashBackgroundColor: '#f7f7f7',
+        },
+      },
+    }),
+  },
 }
 
 export default function RootLayout({
