@@ -2,12 +2,11 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { ClientProviders } from '@/components/providers/ClientProviders'
+import { BASE_URL } from '@/lib/constants'
 
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-
-const BASE_URL = 'https://dao.ens.gregskril.com'
 
 export const metadata: Metadata = {
   title: {
