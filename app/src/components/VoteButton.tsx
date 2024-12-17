@@ -25,10 +25,12 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
+import { useIsMounted } from '@/hooks/useIsMounted'
 import revalidateProposal from '@/lib/actions'
 import { bigintToFormattedString } from '@/lib/utils'
 
 export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
+  const isMounted = useIsMounted()
   const { address } = useAccount()
   const { data: blockNumber } = useBlockNumber()
   const tx = useWriteContract()
@@ -85,6 +87,10 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
     }
   }
 
+  if (!isMounted || (address && !multicall.data)) {
+    return <Button variant="primary" disabled isLoading />
+  }
+
   if (!address) {
     return (
       <Button variant="primary" className="font-bold" disabled>
@@ -99,11 +105,12 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
         <Button
           variant="primary"
           className="font-bold"
-          disabled={multicall.isLoading || hasVoted === true}
+          disabled={hasVoted === true}
         >
           {hasVoted === true
             ? 'Already Voted'
-            : `Vote with ${bigintToFormattedString(votingPower ?? '0')} $ENS`}
+            : // @ts-expect-error: this isn't reached if multicall.data is undefined
+              `Vote with ${bigintToFormattedString(votingPower)} $ENS`}
         </Button>
       </DialogTrigger>
 
