@@ -86,6 +86,11 @@ export function getPercentageOfTotalVotes(
   const abstainVotes = parseVotes(proposal.abstainVotes)
   const totalVotes = againstVotes + forVotes + abstainVotes
   const num = parseVotes(numerator)
+
+  if (totalVotes === 0) {
+    return 0
+  }
+
   return (num / totalVotes) * 100
 }
 
