@@ -22,7 +22,9 @@ export function ProposalStatus({ proposal, className }: Props) {
 
   return (
     <Badge variant={variant} className={cn('w-fit', className)}>
-      {proposal.status.toUpperCase()}
+      {proposal.status === 'succeeded'
+        ? 'PASSED'
+        : proposal.status.toUpperCase()}
     </Badge>
   )
 }
