@@ -101,7 +101,9 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
           className="font-bold"
           disabled={multicall.isLoading || hasVoted === true}
         >
-          {hasVoted === true ? 'Already Voted' : 'Vote Now'}
+          {hasVoted === true
+            ? 'Already Voted'
+            : `Vote with ${bigintToFormattedString(votingPower ?? '0')} $ENS`}
         </Button>
       </DialogTrigger>
 
