@@ -223,28 +223,49 @@ export function ProposalPageClient({ proposal }: Props) {
               {/* Executable code */}
               <TabsContent value="calldata">
                 {proposal.targets.map((target, index) => (
-                  <pre
-                    key={index}
-                    className="my-6 block max-w-full whitespace-pre-wrap break-all rounded-md bg-muted p-4"
-                  >
-                    <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6">
-                      <div>target:</div>
-                      <div>{target}</div>
+                  <div key={index} className="my-6 text-sm">
+                    <pre className="max-w-full whitespace-pre-wrap break-all rounded-md bg-muted p-4">
+                      <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6">
+                        <div>target:</div>
+                        <div>{target}</div>
 
-                      <div>calldata:</div>
-                      <div>{proposal.calldatas[index]}</div>
+                        <div>calldata:</div>
+                        <div>{proposal.calldatas[index]}</div>
 
-                      <div>value:</div>
-                      <div>{proposal.values[index]}</div>
+                        <div>value:</div>
+                        <div>{proposal.values[index]}</div>
 
-                      {proposal.signatures[index] && (
-                        <>
-                          <div>signature:</div>
-                          <div>{proposal.signatures[index]}</div>
-                        </>
-                      )}
+                        {proposal.signatures[index] && (
+                          <>
+                            <div>signature:</div>
+                            <div>{proposal.signatures[index]}</div>
+                          </>
+                        )}
+                      </div>
+                    </pre>
+
+                    <div className="mt-2 flex justify-end gap-2">
+                      <a
+                        href={`https://etherscan.io/address/${target}`}
+                        target="_blank"
+                        className={buttonVariants({
+                          size: 'xs',
+                        })}
+                      >
+                        View Contract
+                      </a>
+
+                      <a
+                        href={`https://calldata.swiss-knife.xyz/decoder?calldata=${proposal.calldatas[index]}&chainId=1&address=${target}`}
+                        target="_blank"
+                        className={buttonVariants({
+                          size: 'xs',
+                        })}
+                      >
+                        Decode Calldata
+                      </a>
                     </div>
-                  </pre>
+                  </div>
                 ))}
               </TabsContent>
             </CardContent>
