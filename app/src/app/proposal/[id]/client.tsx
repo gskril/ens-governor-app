@@ -8,8 +8,8 @@ import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
 
 import { ConnectButton } from '@/components/ConnectButton'
-import { ExecuteButton } from '@/components/ExecuteButton'
 import { Footer } from '@/components/Footer'
+import { ProposalActionButton } from '@/components/ProposalActionButton'
 import { ProposalStatus } from '@/components/ProposalStatus'
 import { ProposalVote } from '@/components/ProposalVote'
 import { VoteButton } from '@/components/VoteButton'
@@ -97,8 +97,13 @@ export function ProposalPageClient({ proposal }: Props) {
             </Typography>
 
             {proposal.status === 'active' && <VoteButton proposal={proposal} />}
+
+            {proposal.status === 'succeeded' && (
+              <ProposalActionButton proposal={proposal} action="queue" />
+            )}
+
             {proposal.status === 'queued' && (
-              <ExecuteButton proposal={proposal} />
+              <ProposalActionButton proposal={proposal} action="execute" />
             )}
           </div>
         </CardContent>

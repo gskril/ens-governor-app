@@ -13,14 +13,19 @@ import { cn } from '@/lib/utils'
 
 import { Button, buttonVariants } from './ui/button'
 
-export function ExecuteButton({ proposal }: { proposal: EnhancedProposal }) {
+interface Props {
+  proposal: EnhancedProposal
+  action: 'execute' | 'queue'
+}
+
+export function ProposalActionButton({ proposal, action }: Props) {
   const { address } = useAccount()
   const tx = useWriteContract()
   const receipt = useWaitForTransactionReceipt({ hash: tx.data })
 
   const data = {
     ...GovernorContract,
-    functionName: 'execute',
+    functionName: action,
     args: [
       proposal.targets, // targets
       proposal.values.map((value) => BigInt(value)), // values
@@ -41,7 +46,7 @@ export function ExecuteButton({ proposal }: { proposal: EnhancedProposal }) {
 
   if (!simulate.data) return null
 
-  if (!receipt.isSuccess) {
+  if (receipt.isSuccess) {
     return (
       <a
         className={cn(
@@ -61,10 +66,10 @@ export function ExecuteButton({ proposal }: { proposal: EnhancedProposal }) {
       <Button
         type="submit"
         variant="primary"
-        className="font-bold"
+        className="w-full font-bold capitalize"
         isLoading={tx.isPending || receipt.isLoading}
       >
-        Execute
+        {action}
       </Button>
     </form>
   )

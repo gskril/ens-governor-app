@@ -11,7 +11,11 @@ type Props = {
 export function ProposalStatus({ proposal, className }: Props) {
   let variant: BadgeProps['variant'] = 'primary'
 
-  const successBadge: EnhancedProposal['status'][] = ['succeeded', 'executed']
+  const successBadge: EnhancedProposal['status'][] = [
+    'succeeded',
+    'queued',
+    'executed',
+  ]
   const failedBadge: EnhancedProposal['status'][] = ['canceled', 'defeated']
 
   if (successBadge.includes(proposal.status)) {
