@@ -140,7 +140,7 @@ export function ProposalPageClient({ proposal }: Props) {
                 <ReactMarkdown
                   components={{
                     h1: ({ children }) => (
-                      <Typography as="h1" className="mb-6">
+                      <Typography as="h1" className="mb-6 lg:text-4xl">
                         {children}
                       </Typography>
                     ),
@@ -273,7 +273,10 @@ export function ProposalPageClient({ proposal }: Props) {
         </Card>
 
         {/* Votes */}
-        <Card className="sticky top-6 h-fit" id="votes">
+        <Card
+          className="sticky top-6 overflow-y-scroll lg:h-[calc(100svh-3rem)]"
+          id="votes"
+        >
           <CardHeader className="space-y-2">
             <CardTitle>Votes</CardTitle>
 

@@ -29,7 +29,9 @@ export default async function Home() {
       <div className="mb-8 mt-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <img src="/img/logo.svg" alt="ENS Logo Mark" className="w-12" />
-          <Typography as="h1">ENS Governance</Typography>
+          <Typography as="h1" className="lg:text-5xl">
+            ENS Governance
+          </Typography>
         </div>
 
         <Typography as="h2" className="mt-2 text-2xl text-zinc-500">
