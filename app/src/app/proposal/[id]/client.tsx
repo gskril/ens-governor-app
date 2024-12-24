@@ -29,10 +29,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import {
   bigintToFormattedString,
+  cn,
   formatTimestamp,
   getPercentageOfTotalVotes,
   getQuorumProgress,
   nameWithFallback,
+  parseVotes,
 } from '@/lib/utils'
 
 type Props = {
@@ -295,35 +297,13 @@ export function ProposalPageClient({ proposal }: Props) {
               </div>
             </div>
 
-            {/* For votes */}
-            <div className="space-y-1">
-              <Typography className="text-sm text-zinc-500">
-                For votes: {bigintToFormattedString(proposal.forVotes)}
-              </Typography>
-              <div className="h-2 overflow-hidden rounded bg-zinc-200">
-                <div
-                  className="h-full rounded bg-green-600"
-                  style={{
-                    width: `${getPercentageOfTotalVotes(proposal.forVotes, proposal)}%`,
-                  }}
-                />
-              </div>
-            </div>
+            <VoteBar proposal={proposal} voteType="for" />
 
-            {/* Against votes */}
-            <div className="space-y-1">
-              <Typography className="text-sm text-zinc-500">
-                Against votes: {bigintToFormattedString(proposal.againstVotes)}
-              </Typography>
-              <div className="h-2 overflow-hidden rounded bg-zinc-200">
-                <div
-                  className="h-full rounded bg-destructive"
-                  style={{
-                    width: `${getPercentageOfTotalVotes(proposal.againstVotes, proposal)}%`,
-                  }}
-                />
-              </div>
-            </div>
+            <VoteBar proposal={proposal} voteType="against" />
+
+            {parseVotes(proposal.abstainVotes) > 0 && (
+              <VoteBar proposal={proposal} voteType="abstain" />
+            )}
           </CardHeader>
           <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {
@@ -334,6 +314,37 @@ export function ProposalPageClient({ proposal }: Props) {
       </div>
 
       <Footer />
+    </div>
+  )
+}
+
+function VoteBar({
+  proposal,
+  voteType,
+}: {
+  proposal: EnhancedProposalWithVotes
+  voteType: 'for' | 'against' | 'abstain'
+}) {
+  const key = `${voteType}Votes` as const
+
+  return (
+    <div className="space-y-1">
+      <Typography className="text-sm capitalize text-zinc-500">
+        {voteType}: {bigintToFormattedString(proposal[key])}
+      </Typography>
+      <div className="h-2 overflow-hidden rounded bg-zinc-200">
+        <div
+          className={cn(
+            'h-full rounded',
+            voteType === 'for' && 'bg-green-600',
+            voteType === 'against' && 'bg-destructive',
+            voteType === 'abstain' && 'bg-zinc-500'
+          )}
+          style={{
+            width: `${getPercentageOfTotalVotes(proposal[key], proposal)}%`,
+          }}
+        />
+      </div>
     </div>
   )
 }
