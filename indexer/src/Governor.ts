@@ -55,8 +55,13 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
   })
 
   // Assume 12 second block time
-  const startTimestamp = event.block.timestamp + votingDelay * 12n
-  const endTimestamp = startTimestamp + votingPeriod * 12n
+  const blockTime = 12.075
+  const startTimestamp = Math.floor(
+    Number(event.block.timestamp) + Number(votingDelay) * blockTime
+  )
+  const endTimestamp = Math.floor(
+    startTimestamp + Number(votingPeriod) * blockTime
+  )
 
   await context.db.insert(proposal).values({
     ...event.args,
@@ -64,8 +69,8 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
     title: getTitle(event.args.description),
     createdAtBlock: event.block.number,
     createdAtTimestamp: event.block.timestamp,
-    startTimestamp,
-    endTimestamp,
+    startTimestamp: BigInt(startTimestamp),
+    endTimestamp: BigInt(endTimestamp),
     quorum,
     forVotes: 0n,
     againstVotes: 0n,
