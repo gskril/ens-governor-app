@@ -28,18 +28,31 @@ export default async function Home() {
     <div className="container">
       <div className="mb-8 mt-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
-          <img src="/img/logo.svg" alt="ENS Logo Mark" className="w-12" />
-          <Typography as="h1" className="lg:text-5xl">
-            ENS Governance
-          </Typography>
-        </div>
+          <img
+            src="/img/logo-filled.svg"
+            alt="ENS Logo Mark"
+            className="w-40 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029]"
+          />
 
-        <Typography as="h2" className="mt-2 text-2xl text-zinc-500">
-          Executable proposals that control the ENS Protocol and DAO.
-        </Typography>
+          <div className="space-y-3">
+            <h1 className="space-y-3">
+              <span className="line block text-2xl font-semibold leading-none text-primary-brand">
+                ENS
+              </span>{' '}
+              <span className="block text-3xl font-bold leading-none lg:text-5xl">
+                Executable Proposals
+              </span>
+            </h1>
+
+            <h2 className="text-base font-medium text-zinc-500">
+              View and vote on executable proposals from the ENS Protocol and
+              DAO.
+            </h2>
+          </div>
+        </div>
       </div>
 
-      <div className="rounded border">
+      <div className="rounded-xl border shadow-[0_-4px_10px_0px_#00000008]">
         <Table>
           <TableHeader>
             <TableRow>
@@ -62,7 +75,8 @@ export default async function Home() {
 
                   {formatTimestamp(proposal.createdAtTimestamp)}
                 </TableCell>
-                <TableCell>
+                {/* Not sure why max-w-0 is needed here, but it seems to work fine in all browsers */}
+                <TableCell className="max-w-0 truncate">
                   <Link
                     href={`/proposal/${proposal.id}`}
                     className="font-medium hover:underline"
