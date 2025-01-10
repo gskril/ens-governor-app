@@ -76,7 +76,9 @@ export default async function Home() {
               <TableHead className="hidden w-36 lg:table-cell">
                 Status
               </TableHead>
-              <TableHead className="w-24 text-right">Votes</TableHead>
+              <TableHead className="hidden w-24 text-right md:table-cell">
+                Votes
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -91,7 +93,7 @@ export default async function Home() {
                   <span>{formatTimestamp(proposal.createdAtTimestamp)}</span>
                 </TableCell>
                 {/* Not sure why max-w-0 is needed here, but it seems to work fine in all browsers */}
-                <TableCell className="max-w-0 truncate">
+                <TableCell className="md:max-w-0 md:truncate">
                   <Link
                     href={`/proposal/${proposal.id}`}
                     className="font-medium hover:underline"
@@ -102,7 +104,7 @@ export default async function Home() {
                 <TableCell className="hidden lg:table-cell">
                   <ProposalStatus proposal={proposal} />
                 </TableCell>
-                <TableCell className="space-y-1 text-right">
+                <TableCell className="hidden space-y-1 text-right md:table-cell">
                   <span>
                     {bigintToFormattedString(getTotalVotes(proposal))}
                   </span>
