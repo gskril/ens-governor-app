@@ -33,7 +33,9 @@ export default async function Home() {
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
             <img
               src="/img/logo-filled.svg"
-              alt="ENS Logo Mark"
+              alt="ENS Logo"
+              width={160}
+              height={160}
               className="w-28 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029] md:w-40"
             />
 
