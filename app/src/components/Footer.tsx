@@ -14,7 +14,7 @@ export function Footer() {
             key={href}
             href={href}
             target="_blank"
-            className="font-medium hover:underline"
+            className="font-medium transition-colors hover:text-primary-brand"
           >
             {label}
           </a>

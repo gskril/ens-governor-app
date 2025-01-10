@@ -83,20 +83,22 @@ export default async function Home() {
           </TableHeader>
           <TableBody>
             {proposals?.map((proposal) => (
-              <TableRow key={proposal.id}>
-                <TableCell className="flex flex-col gap-0.5">
+              <TableRow key={proposal.id} className="group">
+                <TableCell className="space-y-0.5">
                   <ProposalStatus
                     proposal={proposal}
                     className="table-cell lg:hidden"
                   />
 
-                  <span>{formatTimestamp(proposal.createdAtTimestamp)}</span>
+                  <span className="block">
+                    {formatTimestamp(proposal.createdAtTimestamp)}
+                  </span>
                 </TableCell>
                 {/* Not sure why max-w-0 is needed here, but it seems to work fine in all browsers */}
                 <TableCell className="md:max-w-0 md:truncate">
                   <Link
                     href={`/proposal/${proposal.id}`}
-                    className="font-medium hover:underline"
+                    className="font-medium hover:underline group-hover:text-primary-brand"
                   >
                     {proposal.title}
                   </Link>
