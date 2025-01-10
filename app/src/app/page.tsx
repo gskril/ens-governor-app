@@ -2,6 +2,8 @@ import Link from 'next/link'
 
 import { Footer } from '@/components/Footer'
 import { ProposalStatus } from '@/components/ProposalStatus'
+import { DiscourseIcon, XIcon } from '@/components/icons'
+import { IconWrapper } from '@/components/icons/IconWrapper'
 import {
   Table,
   TableBody,
@@ -27,27 +29,38 @@ export default async function Home() {
   return (
     <div className="container">
       <div className="mb-8 mt-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
-          <img
-            src="/img/logo-filled.svg"
-            alt="ENS Logo Mark"
-            className="w-28 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029] md:w-40"
-          />
+        <div className="flex flex-col justify-between gap-3 md:flex-row md:gap-12">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+            <img
+              src="/img/logo-filled.svg"
+              alt="ENS Logo Mark"
+              className="w-28 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029] md:w-40"
+            />
 
-          <div className="space-y-3">
-            <h1 className="space-y-3">
-              <span className="line block text-2xl font-semibold leading-none text-primary-brand">
-                ENS
-              </span>{' '}
-              <span className="block text-3xl font-bold leading-none lg:text-5xl">
-                Executable Proposals
-              </span>
-            </h1>
+            <div className="space-y-3">
+              <h1 className="space-y-3">
+                <span className="line block text-2xl font-semibold leading-none text-primary-brand">
+                  ENS
+                </span>{' '}
+                <span className="block text-3xl font-bold leading-none lg:text-5xl">
+                  Executable Proposals
+                </span>
+              </h1>
 
-            <h2 className="text-base font-medium text-zinc-500">
-              View and vote on executable proposals from the ENS Protocol and
-              DAO.
-            </h2>
+              <h2 className="text-base font-medium text-zinc-500">
+                View and vote on executable proposals from the ENS Protocol and
+                DAO.
+              </h2>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <IconWrapper href="https://x.com/ENS_DAO" icon={<XIcon />} />
+            <IconWrapper
+              href="https://discuss.ens.domains"
+              icon={<DiscourseIcon />}
+              text="Forum"
+            />
           </div>
         </div>
       </div>
