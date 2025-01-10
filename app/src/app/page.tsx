@@ -82,13 +82,13 @@ export default async function Home() {
           <TableBody>
             {proposals?.map((proposal) => (
               <TableRow key={proposal.id}>
-                <TableCell>
+                <TableCell className="flex flex-col gap-0.5">
                   <ProposalStatus
                     proposal={proposal}
                     className="table-cell lg:hidden"
                   />
 
-                  {formatTimestamp(proposal.createdAtTimestamp)}
+                  <span>{formatTimestamp(proposal.createdAtTimestamp)}</span>
                 </TableCell>
                 {/* Not sure why max-w-0 is needed here, but it seems to work fine in all browsers */}
                 <TableCell className="max-w-0 truncate">
