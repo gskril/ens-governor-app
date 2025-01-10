@@ -47,7 +47,10 @@ export function ProposalPageClient({ proposal }: Props) {
   return (
     <div className="container">
       <div className="flex items-center justify-between">
-        <Link href="/" className="flex w-fit items-center gap-2 font-semibold">
+        <Link
+          href="/"
+          className="flex w-fit items-center gap-2 font-semibold text-zinc-500"
+        >
           <ArrowLeft className="size-5" />
           <span className="hidden sm:block">All Proposals</span>
           <span className="block sm:hidden">Home</span>
@@ -56,8 +59,8 @@ export function ProposalPageClient({ proposal }: Props) {
         <ConnectButton />
       </div>
 
-      <Card>
-        <CardContent className="flex flex-col gap-4 p-6 pb-4">
+      <div className="grid gap-6 py-4 lg:grid-cols-[2fr_1fr]">
+        <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <ProposalStatus proposal={proposal} />
             <Typography className="text-sm text-zinc-500">
@@ -66,14 +69,10 @@ export function ProposalPageClient({ proposal }: Props) {
             </Typography>
           </div>
 
-          <Typography as="h1" className="mb-2">
-            {proposal.title}
-          </Typography>
-
-          <hr />
+          <Typography as="h1">{proposal.title}</Typography>
 
           <div className="flex flex-col justify-between gap-4 sm:flex-row">
-            <Typography className="flex items-center">
+            <Typography className="flex items-center text-sm">
               <span className="hidden sm:block">Proposed by</span>
               <span className="block sm:hidden">By</span>
               <div className="mx-1.5 flex items-center gap-1">
@@ -88,7 +87,7 @@ export function ProposalPageClient({ proposal }: Props) {
                   href={`https://etherscan.io/address/${proposal.proposer}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="underline"
+                  className="font-semibold hover:underline"
                 >
                   {nameWithFallback(proposerEnsName, proposal.proposer)}
                 </a>
@@ -108,8 +107,8 @@ export function ProposalPageClient({ proposal }: Props) {
               <ProposalActionButton proposal={proposal} action="execute" />
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <a
         href="#votes"
@@ -124,7 +123,8 @@ export function ProposalPageClient({ proposal }: Props) {
       </a>
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <Card className="h-fit overflow-x-auto">
+        {/* Proposal */}
+        <Card className="h-fit overflow-x-auto shadow-[0_-4px_10px_0px_#00000008]">
           <Tabs defaultValue="body">
             <TabsList className="h-auto w-full justify-start rounded-none p-2">
               <TabsTrigger className="w-full" value="body">
@@ -173,7 +173,7 @@ export function ProposalPageClient({ proposal }: Props) {
                         href={href}
                         target="_blank"
                         rel="noreferrer"
-                        className="underline"
+                        className="text-primary-brand underline"
                       >
                         {children}
                       </a>
@@ -276,26 +276,11 @@ export function ProposalPageClient({ proposal }: Props) {
 
         {/* Votes */}
         <Card
-          className="sticky top-6 overflow-y-scroll lg:h-[calc(100svh-3rem)]"
+          className="sticky top-6 overflow-y-scroll shadow-[0_-4px_10px_0px_#00000008] lg:h-[calc(100svh-3rem)]"
           id="votes"
         >
           <CardHeader className="space-y-2">
-            <CardTitle>Votes</CardTitle>
-
-            {/* Quorum bar */}
-            <div className="space-y-1">
-              <Typography className="text-sm text-zinc-500">
-                Quorum progress: {getQuorumProgress(proposal)}%
-              </Typography>
-              <div className="h-2 overflow-hidden rounded bg-zinc-200">
-                <div
-                  className="h-full rounded bg-green-600"
-                  style={{
-                    width: `${getQuorumProgress(proposal)}%`,
-                  }}
-                />
-              </div>
-            </div>
+            <CardTitle className="mb-4">Votes</CardTitle>
 
             <VoteBar proposal={proposal} voteType="for" />
 
@@ -304,6 +289,20 @@ export function ProposalPageClient({ proposal }: Props) {
             {parseVotes(proposal.abstainVotes) > 0 && (
               <VoteBar proposal={proposal} voteType="abstain" />
             )}
+
+            {/* Quorum bar */}
+            <div className="relative overflow-hidden rounded bg-zinc-100">
+              <Typography className="relative z-10 block p-2 text-sm capitalize leading-none">
+                Quorum progress: {getQuorumProgress(proposal)}%
+              </Typography>
+
+              <div
+                className="absolute left-0 top-0 z-0 h-full rounded bg-zinc-200"
+                style={{
+                  width: `${getQuorumProgress(proposal)}%`,
+                }}
+              />
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {
@@ -328,23 +327,22 @@ function VoteBar({
   const key = `${voteType}Votes` as const
 
   return (
-    <div className="space-y-1">
-      <Typography className="text-sm capitalize text-zinc-500">
-        {voteType}: {bigintToFormattedString(proposal[key])}
+    <div className="relative overflow-hidden rounded bg-zinc-100">
+      <Typography className="relative z-10 block p-2 text-sm capitalize leading-none">
+        {bigintToFormattedString(proposal[key])} {voteType}
       </Typography>
-      <div className="h-2 overflow-hidden rounded bg-zinc-200">
-        <div
-          className={cn(
-            'h-full rounded',
-            voteType === 'for' && 'bg-green-600',
-            voteType === 'against' && 'bg-destructive',
-            voteType === 'abstain' && 'bg-zinc-500'
-          )}
-          style={{
-            width: `${getPercentageOfTotalVotes(proposal[key], proposal)}%`,
-          }}
-        />
-      </div>
+
+      <div
+        className={cn(
+          'absolute left-0 top-0 z-0 h-full rounded',
+          voteType === 'for' && 'bg-green-600/40',
+          voteType === 'against' && 'bg-destructive/40',
+          voteType === 'abstain' && 'bg-zinc-500/40'
+        )}
+        style={{
+          width: `${getPercentageOfTotalVotes(proposal[key], proposal)}%`,
+        }}
+      />
     </div>
   )
 }
