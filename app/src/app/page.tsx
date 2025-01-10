@@ -10,11 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Typography } from '@/components/ui/typography'
 import { getProposals } from '@/hooks/useProposals'
 import {
   bigintToFormattedString,
   formatTimestamp,
+  getPercentageOfTotalVotes,
   getTotalVotes,
 } from '@/lib/utils'
 
@@ -31,7 +31,7 @@ export default async function Home() {
           <img
             src="/img/logo-filled.svg"
             alt="ENS Logo Mark"
-            className="w-40 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029]"
+            className="w-28 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029] md:w-40"
           />
 
           <div className="space-y-3">
@@ -70,7 +70,7 @@ export default async function Home() {
                 <TableCell>
                   <ProposalStatus
                     proposal={proposal}
-                    className="table-cell rounded-sm lg:hidden"
+                    className="table-cell lg:hidden"
                   />
 
                   {formatTimestamp(proposal.createdAtTimestamp)}
@@ -87,8 +87,24 @@ export default async function Home() {
                 <TableCell className="hidden lg:table-cell">
                   <ProposalStatus proposal={proposal} />
                 </TableCell>
-                <TableCell className="text-right">
-                  {bigintToFormattedString(getTotalVotes(proposal))}
+                <TableCell className="space-y-1 text-right">
+                  <span>
+                    {bigintToFormattedString(getTotalVotes(proposal))}
+                  </span>
+
+                  <div className="flex items-center gap-1 text-xs font-semibold leading-none">
+                    <span className="text-green-600">
+                      {getPercentageOfTotalVotes(proposal.forVotes, proposal)}%
+                    </span>
+                    <span className="text-zinc-200">|</span>
+                    <span className="text-destructive">
+                      {getPercentageOfTotalVotes(
+                        proposal.againstVotes,
+                        proposal
+                      )}
+                      %
+                    </span>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

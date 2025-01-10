@@ -91,7 +91,8 @@ export function getPercentageOfTotalVotes(
     return 0
   }
 
-  return (num / totalVotes) * 100
+  const percentage = (num / totalVotes) * 100
+  return Math.floor(percentage)
 }
 
 /**
