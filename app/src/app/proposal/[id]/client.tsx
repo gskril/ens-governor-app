@@ -59,7 +59,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <div className="grid gap-6 py-4 lg:grid-cols-[2fr_1fr]">
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <ProposalStatus proposal={proposal} />
             <Typography className="text-sm text-zinc-500">
               Ends{' '}
