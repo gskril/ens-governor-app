@@ -108,6 +108,11 @@ export function ProposalPageClient({ proposal }: Props) {
         </div>
       </div>
 
+      {/* Mobile votes */}
+      <Card className="md:hidden">
+        <VotingCardHeader proposal={proposal} />
+      </Card>
+
       <a
         href="#votes"
         className={buttonVariants({
@@ -277,35 +282,7 @@ export function ProposalPageClient({ proposal }: Props) {
           className="sticky top-6 overflow-y-scroll rounded-xl shadow-[0_-4px_10px_0px_#00000008] lg:h-[calc(100svh-3rem)]"
           id="votes"
         >
-          <CardHeader className="space-y-2">
-            <CardTitle className="mb-4">Votes</CardTitle>
-
-            <VoteBar proposal={proposal} voteType="for" />
-
-            <VoteBar proposal={proposal} voteType="against" />
-
-            {parseVotes(proposal.abstainVotes) > 0 && (
-              <VoteBar proposal={proposal} voteType="abstain" />
-            )}
-
-            {/* Quorum bar */}
-            <div className="relative overflow-hidden rounded bg-zinc-100">
-              <div className="relative z-10 flex justify-between gap-2 p-2 text-sm capitalize leading-none">
-                <Typography className="font-medium">
-                  {getQuorumProgress(proposal)}%
-                </Typography>
-
-                <Typography>Quorum</Typography>
-              </div>
-
-              <div
-                className="absolute left-0 top-0 z-0 h-full rounded bg-zinc-200"
-                style={{
-                  width: `${getQuorumProgress(proposal)}%`,
-                }}
-              />
-            </div>
-          </CardHeader>
+          <VotingCardHeader proposal={proposal} />
 
           <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {
@@ -317,5 +294,43 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <Footer />
     </div>
+  )
+}
+
+function VotingCardHeader({
+  proposal,
+}: {
+  proposal: EnhancedProposalWithVotes
+}) {
+  return (
+    <CardHeader className="space-y-2">
+      <CardTitle className="mb-4">Votes</CardTitle>
+
+      <VoteBar proposal={proposal} voteType="for" />
+
+      <VoteBar proposal={proposal} voteType="against" />
+
+      {parseVotes(proposal.abstainVotes) > 0 && (
+        <VoteBar proposal={proposal} voteType="abstain" />
+      )}
+
+      {/* Quorum bar */}
+      <div className="relative overflow-hidden rounded bg-zinc-100">
+        <div className="relative z-10 flex justify-between gap-2 p-2 text-sm capitalize leading-none">
+          <Typography className="font-medium">
+            {getQuorumProgress(proposal)}%
+          </Typography>
+
+          <Typography>Quorum</Typography>
+        </div>
+
+        <div
+          className="absolute left-0 top-0 z-0 h-full rounded bg-zinc-200"
+          style={{
+            width: `${getQuorumProgress(proposal)}%`,
+          }}
+        />
+      </div>
+    </CardHeader>
   )
 }
