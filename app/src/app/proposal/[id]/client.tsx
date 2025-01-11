@@ -12,6 +12,7 @@ import { Footer } from '@/components/Footer'
 import { ProposalActionButton } from '@/components/ProposalActionButton'
 import { ProposalStatus } from '@/components/ProposalStatus'
 import { ProposalVote } from '@/components/ProposalVote'
+import { VoteBar } from '@/components/VoteBar'
 import { VoteButton } from '@/components/VoteButton'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -28,10 +29,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import {
-  bigintToFormattedString,
-  cn,
   formatTimestamp,
-  getPercentageOfTotalVotes,
   getQuorumProgress,
   nameWithFallback,
   parseVotes,
@@ -124,9 +122,9 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         {/* Proposal */}
-        <Card className="h-fit overflow-x-auto shadow-[0_-4px_10px_0px_#00000008]">
-          <Tabs defaultValue="body">
-            <TabsList className="h-auto w-full justify-start rounded-none p-2">
+        <Card className="h-fit overflow-x-auto rounded-xl shadow-[0_-4px_10px_0px_#00000008]">
+          <Tabs defaultValue="body" className="md:p-3">
+            <TabsList className="h-auto w-full justify-start rounded-lg p-2">
               <TabsTrigger className="w-full" value="body">
                 Description
               </TabsTrigger>
@@ -136,7 +134,7 @@ export function ProposalPageClient({ proposal }: Props) {
               </TabsTrigger>
             </TabsList>
 
-            <CardContent className="pb-4 pt-2">
+            <CardContent className="px-3 pb-4 pt-2">
               {/* Proposal body */}
               <TabsContent value="body">
                 <ReactMarkdown
@@ -276,7 +274,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
         {/* Votes */}
         <Card
-          className="sticky top-6 overflow-y-scroll shadow-[0_-4px_10px_0px_#00000008] lg:h-[calc(100svh-3rem)]"
+          className="sticky top-6 overflow-y-scroll rounded-xl shadow-[0_-4px_10px_0px_#00000008] lg:h-[calc(100svh-3rem)]"
           id="votes"
         >
           <CardHeader className="space-y-2">
@@ -292,9 +290,13 @@ export function ProposalPageClient({ proposal }: Props) {
 
             {/* Quorum bar */}
             <div className="relative overflow-hidden rounded bg-zinc-100">
-              <Typography className="relative z-10 block p-2 text-sm capitalize leading-none">
-                Quorum progress: {getQuorumProgress(proposal)}%
-              </Typography>
+              <div className="relative z-10 flex justify-between gap-2 p-2 text-sm capitalize leading-none">
+                <Typography className="font-medium">
+                  {getQuorumProgress(proposal)}%
+                </Typography>
+
+                <Typography>Quorum</Typography>
+              </div>
 
               <div
                 className="absolute left-0 top-0 z-0 h-full rounded bg-zinc-200"
@@ -304,6 +306,7 @@ export function ProposalPageClient({ proposal }: Props) {
               />
             </div>
           </CardHeader>
+
           <CardContent className="space-y-4">
             {proposal.votes.map((vote) => {
               return <ProposalVote key={vote.id} vote={vote} />
@@ -313,36 +316,6 @@ export function ProposalPageClient({ proposal }: Props) {
       </div>
 
       <Footer />
-    </div>
-  )
-}
-
-function VoteBar({
-  proposal,
-  voteType,
-}: {
-  proposal: EnhancedProposalWithVotes
-  voteType: 'for' | 'against' | 'abstain'
-}) {
-  const key = `${voteType}Votes` as const
-
-  return (
-    <div className="relative overflow-hidden rounded bg-zinc-100">
-      <Typography className="relative z-10 block p-2 text-sm capitalize leading-none">
-        {bigintToFormattedString(proposal[key])} {voteType}
-      </Typography>
-
-      <div
-        className={cn(
-          'absolute left-0 top-0 z-0 h-full rounded',
-          voteType === 'for' && 'bg-green-600/40',
-          voteType === 'against' && 'bg-destructive/40',
-          voteType === 'abstain' && 'bg-zinc-500/40'
-        )}
-        style={{
-          width: `${getPercentageOfTotalVotes(proposal[key], proposal)}%`,
-        }}
-      />
     </div>
   )
 }
