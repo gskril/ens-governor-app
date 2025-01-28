@@ -55,7 +55,7 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
   })
 
   // Assume 12 second block time
-  const blockTime = 12.075
+  const blockTime = 12
   const startTimestamp = Math.floor(
     Number(event.block.timestamp) + Number(votingDelay) * blockTime
   )
