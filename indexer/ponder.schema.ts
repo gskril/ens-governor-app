@@ -1,4 +1,4 @@
-import { onchainTable, relations } from '@ponder/core'
+import { onchainTable, relations } from 'ponder'
 
 export const proposal = onchainTable('proposal', (t) => ({
   id: t.bigint().primaryKey(),

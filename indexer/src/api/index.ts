@@ -1,15 +1,19 @@
-import { graphql } from '@ponder/core'
 import { replaceBigInts } from '@ponder/utils'
-
-import { ponder } from '@/generated'
+import { Hono } from 'hono'
+import { graphql } from 'ponder'
+import { db } from 'ponder:api'
+import schema from 'ponder:schema'
 
 import { getPropQuorumReached } from '../utils'
 import { getPropStatus } from '../utils'
 
-ponder.use('/', graphql())
+const app = new Hono()
 
-ponder.get('/proposals', async (c) => {
-  const props = await c.db.query.proposal.findMany({
+app.use('/', graphql({ db, schema }))
+app.use('/graphql', graphql({ db, schema }))
+
+app.get('/proposals', async (c) => {
+  const props = await db.query.proposal.findMany({
     limit: 50,
     orderBy: (table, { desc }) => [desc(table.createdAtBlock)],
   })
@@ -27,9 +31,9 @@ ponder.get('/proposals', async (c) => {
   return c.json(replaceBigInts(propsWithStatus, (v) => String(v)))
 })
 
-ponder.get('/proposals/:proposalId', async (c) => {
+app.get('/proposals/:proposalId', async (c) => {
   const proposalId = c.req.param('proposalId')
-  const prop = await c.db.query.proposal.findFirst({
+  const prop = await db.query.proposal.findFirst({
     where: (cols, { eq }) => eq(cols.id, BigInt(proposalId)),
     with: {
       votes: {
@@ -56,3 +60,5 @@ ponder.get('/proposals/:proposalId', async (c) => {
 
   return c.json(enhancedProposal)
 })
+
+export default app

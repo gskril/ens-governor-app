@@ -1,7 +1,6 @@
 import { replaceBigInts } from '@ponder/utils'
+import { ponder } from 'ponder:registry'
 import { keccak256, toHex } from 'viem/utils'
-
-import { ponder } from '@/generated'
 
 import {
   proposal,
@@ -18,7 +17,7 @@ import { getTitle, removeTitle } from './utils'
 ponder.on('Governor:ProposalCanceled', async ({ event, context }) => {
   await context.db.insert(proposalCanceledEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
   })
 
@@ -30,7 +29,7 @@ ponder.on('Governor:ProposalCanceled', async ({ event, context }) => {
 ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
   await context.db.insert(proposalCreatedEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
     values: replaceBigInts(event.args.values, (v) => String(v)),
   })
@@ -87,7 +86,7 @@ ponder.on('Governor:ProposalCreated', async ({ event, context }) => {
 ponder.on('Governor:ProposalExecuted', async ({ event, context }) => {
   await context.db.insert(proposalExecutedEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
     transaction: event.transaction.hash,
   })
@@ -101,7 +100,7 @@ ponder.on('Governor:ProposalExecuted', async ({ event, context }) => {
 ponder.on('Governor:ProposalQueued', async ({ event, context }) => {
   await context.db.insert(proposalQueuedEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
   })
 
@@ -113,7 +112,7 @@ ponder.on('Governor:ProposalQueued', async ({ event, context }) => {
 ponder.on('Governor:QuorumNumeratorUpdated', async ({ event, context }) => {
   await context.db.insert(quorumNumeratorUpdatedEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
   })
 })
@@ -121,7 +120,7 @@ ponder.on('Governor:QuorumNumeratorUpdated', async ({ event, context }) => {
 ponder.on('Governor:TimelockChange', async ({ event, context }) => {
   await context.db.insert(timelockChangeEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
   })
 })
@@ -130,7 +129,7 @@ ponder.on('Governor:VoteCast', async ({ event, context }) => {
   // 0 = for, 1 = against, 2 = abstain
   await context.db.insert(voteCastEvent).values({
     ...event.args,
-    id: event.log.id,
+    id: event.id,
     timestamp: event.block.timestamp,
     transaction: event.transaction.hash,
   })
