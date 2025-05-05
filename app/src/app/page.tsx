@@ -67,7 +67,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="rounded-xl border shadow-[0_-4px_10px_0px_#00000008]">
+      <div className="shadow-custom-card rounded-xl border">
         <Table>
           <TableHeader>
             <TableRow>

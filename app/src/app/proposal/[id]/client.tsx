@@ -57,7 +57,7 @@ export function ProposalPageClient({ proposal }: Props) {
         <ConnectButton />
       </div>
 
-      <div className="grid gap-6 py-4 lg:grid-cols-[2fr_1fr]">
+      <div className="grid items-center gap-6 py-4 lg:grid-cols-[2fr_1fr]">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <ProposalStatus proposal={proposal} />
@@ -94,22 +94,35 @@ export function ProposalPageClient({ proposal }: Props) {
                 on {formatTimestamp(proposal.createdAtTimestamp)}
               </span>
             </Typography>
-
-            {proposal.status === 'active' && <VoteButton proposal={proposal} />}
-
-            {proposal.status === 'succeeded' && (
-              <ProposalActionButton proposal={proposal} action="queue" />
-            )}
-
-            {proposal.status === 'queued' && (
-              <ProposalActionButton proposal={proposal} action="execute" />
-            )}
           </div>
         </div>
+
+        {(() => {
+          const buttonStatuses = ['active', 'succeeded', 'queued']
+          const showButton = buttonStatuses.includes(proposal.status)
+
+          if (!showButton) return null
+
+          return (
+            <div className="lg:w-fit lg:justify-self-end">
+              {proposal.status === 'active' && (
+                <VoteButton proposal={proposal} />
+              )}
+
+              {proposal.status === 'succeeded' && (
+                <ProposalActionButton proposal={proposal} action="queue" />
+              )}
+
+              {proposal.status === 'queued' && (
+                <ProposalActionButton proposal={proposal} action="execute" />
+              )}
+            </div>
+          )
+        })()}
       </div>
 
       {/* Mobile votes */}
-      <Card className="md:hidden">
+      <Card className="lg:hidden">
         <VotingCardHeader proposal={proposal} />
       </Card>
 
@@ -127,7 +140,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         {/* Proposal */}
-        <Card className="h-fit overflow-x-auto rounded-xl shadow-[0_-4px_10px_0px_#00000008]">
+        <Card className="shadow-custom-card h-fit overflow-x-auto rounded-xl">
           <Tabs defaultValue="body" className="md:p-3">
             <TabsList className="h-auto w-full justify-start rounded-lg p-2">
               <TabsTrigger className="w-full" value="body">
@@ -279,7 +292,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
         {/* Votes */}
         <Card
-          className="sticky top-6 overflow-y-scroll rounded-xl shadow-[0_-4px_10px_0px_#00000008] lg:h-[calc(100svh-3rem)]"
+          className="shadow-custom-card sticky top-6 overflow-y-scroll rounded-xl lg:h-[calc(100svh-3rem)]"
           id="votes"
         >
           <VotingCardHeader proposal={proposal} />
