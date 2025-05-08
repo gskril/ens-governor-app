@@ -62,7 +62,10 @@ export function ProposalPageClient({ proposal }: Props) {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <ProposalStatus proposal={proposal} />
             <Typography className="text-sm text-zinc-500">
-              Ends{' '}
+              {/* Show "ends" or "ended" depending on the time */}
+              {Number(proposal.endTimestamp) > Date.now() / 1000
+                ? 'Ends'
+                : 'Ended'}{' '}
               {formatTimestamp(proposal.endTimestamp, { includeTime: true })}
             </Typography>
           </div>
@@ -140,7 +143,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         {/* Proposal */}
-        <Card className="shadow-custom-card h-fit overflow-x-auto rounded-xl">
+        <Card className="h-fit overflow-x-auto rounded-xl shadow-custom-card">
           <Tabs defaultValue="body" className="md:p-3">
             <TabsList className="h-auto w-full justify-start rounded-lg p-2">
               <TabsTrigger className="w-full" value="body">
@@ -292,7 +295,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
         {/* Votes */}
         <Card
-          className="shadow-custom-card sticky top-6 overflow-y-scroll rounded-xl lg:h-[calc(100svh-3rem)]"
+          className="sticky top-6 overflow-y-scroll rounded-xl shadow-custom-card lg:h-[calc(100svh-3rem)]"
           id="votes"
         >
           <VotingCardHeader proposal={proposal} />
