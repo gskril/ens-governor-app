@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { ClientProviders } from '@/components/providers/ClientProviders'
+import { IndexerWarning } from '@/components/IndexerWarning'
 import { BASE_URL } from '@/lib/constants'
 
 import './globals.css'
@@ -44,7 +45,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} antialiased`}>
-        <ClientProviders>{children}</ClientProviders>
+        <ClientProviders>
+          <IndexerWarning />
+          {children}
+        </ClientProviders>
       </body>
     </html>
   )
