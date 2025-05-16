@@ -4,16 +4,16 @@ import { http } from 'viem'
 import { GovernorContract } from './contracts'
 
 export default createConfig({
-  networks: {
+  chains: {
     mainnet: {
-      chainId: 1,
-      transport: http(process.env.PONDER_RPC_URL_1),
+      id: 1,
+      rpc: http(process.env.PONDER_RPC_URL_1),
     },
   },
   contracts: {
     Governor: {
       ...GovernorContract,
-      network: 'mainnet',
+      chain: 'mainnet',
     },
   },
 })

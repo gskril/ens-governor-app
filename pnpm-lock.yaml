@@ -111,20 +111,20 @@ importers:
   indexer:
     dependencies:
       '@ponder/utils':
-        specifier: ^0.2.3
-        version: 0.2.3(typescript@5.8.3)(viem@2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+        specifier: ^0.2.7
+        version: 0.2.7(typescript@5.8.3)(viem@2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       hono:
-        specifier: ^4.5.0
-        version: 4.7.6
+        specifier: ^4.7.9
+        version: 4.7.9
       marked:
         specifier: ^15.0.3
         version: 15.0.8
       ponder:
-        specifier: ^0.10.9
-        version: 0.10.12(@opentelemetry/api@1.9.0)(@types/node@20.17.30)(hono@4.7.6)(typescript@5.8.3)(viem@2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
+        specifier: ^0.11.1
+        version: 0.11.1(@opentelemetry/api@1.9.0)(@types/node@20.17.30)(hono@4.7.9)(typescript@5.8.3)(viem@2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
       viem:
-        specifier: ^2.26.2
-        version: 2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+        specifier: ^2.29.4
+        version: 2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     devDependencies:
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.0
@@ -797,6 +797,10 @@ packages:
     resolution: {integrity: sha512-warwspo+UYUPep0Q+vtdVB4Ugn8GGQj8iyB3gnRWsztmUHTI3S1nhdiWNsPUGL0vud7JlRRk1XEu7Lq1KGTnMQ==}
     engines: {node: ^14.21.3 || >=16}
 
+  '@noble/curves@1.8.2':
+    resolution: {integrity: sha512-vnI7V6lFNe0tLAuJMu+2sX+FcL14TaCWy1qiczg1VwRmPrpQCdq5ESXQMqUc2tluRNf6irBXrWbl1mGN8uaU/g==}
+    engines: {node: ^14.21.3 || >=16}
+
   '@noble/hashes@1.4.0':
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
@@ -807,6 +811,10 @@ packages:
 
   '@noble/hashes@1.7.1':
     resolution: {integrity: sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ==}
+    engines: {node: ^14.21.3 || >=16}
+
+  '@noble/hashes@1.7.2':
+    resolution: {integrity: sha512-biZ0NUSxyjLLqo6KxEJ1b+C2NAx0wtDoFvCaXHGgUkeHzf3Xc1xKumFKREuT7f7DARNZ/slvYUwFG6B0f2b6hQ==}
     engines: {node: ^14.21.3 || >=16}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -833,8 +841,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@ponder/utils@0.2.3':
-    resolution: {integrity: sha512-QdlRXrn48nRM/QxNHRffO3PnIFvUf9qHE+rXSut44r74E4iiq9UrIPMhSMyCbJN68yU4QyTupZ/qpqE5PNAo8A==}
+  '@ponder/utils@0.2.7':
+    resolution: {integrity: sha512-7BcDd8y6Dmi+Bys4D0m+BULH9ug2XZ5Lsa4CwGSsJrY4OIQJerib6TENzTFHGR65XBV1gu9xLct9pMz7RpvAKg==}
     peerDependencies:
       typescript: '>=5.0.4'
       viem: '>=2'
@@ -2429,8 +2437,8 @@ packages:
   hey-listen@1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
 
-  hono@4.7.6:
-    resolution: {integrity: sha512-564rVzELU+9BRqqx5k8sT2NFwGD3I3Vifdb6P7CmM6FiarOSY+fDC+6B+k9wcCb86ReoayteZP2ki0cRLN1jbw==}
+  hono@4.7.9:
+    resolution: {integrity: sha512-/EsCoR5h7N4yu01TDu9GMCCJa6ZLk5ZJIWFFGNawAXmd1Tp53+Wir4xm0D2X19bbykWUlzQG0+BvPAji6p9E8Q==}
     engines: {node: '>=16.9.0'}
 
   html-url-attributes@3.0.1:
@@ -2558,6 +2566,11 @@ packages:
 
   isows@1.0.6:
     resolution: {integrity: sha512-lPHCayd40oW98/I0uvgaHKWCSvkzY27LjWLbtzOm64yQ+G3Q5npjjbdppU65iZXkK1Zt+kH9pfegli0AYfwYYw==}
+    peerDependencies:
+      ws: '*'
+
+  isows@1.0.7:
+    resolution: {integrity: sha512-I1fSfDCZL5P0v33sVqeTDSpcstAg/N+wF5HS033mogOVIp4B+oHC7oOCsA3axAbBSGTJ8QubbNmnIRN/h8U7hg==}
     peerDependencies:
       ws: '*'
 
@@ -3141,8 +3154,8 @@ packages:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
     engines: {node: '>=10.13.0'}
 
-  ponder@0.10.12:
-    resolution: {integrity: sha512-+Z185kl8GRBdzGKOGxYR210oNcX6Bnhs/I7mVaVSXlOYJBtZbTludEyHBV70xfAd/sasyOPvz2REJYCvDaaITQ==}
+  ponder@0.11.1:
+    resolution: {integrity: sha512-rPfK1l9kUmPi5OA3YyQmx/WhlMmUKFqRiX4iesv2owUtieV7OfbPB+SMtdPYQ3eL/tYFmM/8FJsNibW+m76h8w==}
     engines: {node: '>=18.14'}
     hasBin: true
     peerDependencies:
@@ -3949,6 +3962,14 @@ packages:
       typescript:
         optional: true
 
+  viem@2.29.4:
+    resolution: {integrity: sha512-Dhyae+w1LKKpYVXypGjBnZ3WU5EHl/Uip5RtVwVRYSVxD5VvHzqKzIfbFU1KP4vnnh3++ZNgLjBY/kVT/tPrrg==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vite-node@1.0.2:
     resolution: {integrity: sha512-h7BbMJf46fLvFW/9Ygo3snkIBEHFh6fHpB4lge98H5quYrDhPFeI3S0LREz328uqPWSnii2yeJXktQ+Pmqk5BQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -4484,9 +4505,9 @@ snapshots:
       '@repeaterjs/repeater': 3.0.6
       tslib: 2.8.1
 
-  '@hono/node-server@1.13.3(hono@4.7.6)':
+  '@hono/node-server@1.13.3(hono@4.7.9)':
     dependencies:
-      hono: 4.7.6
+      hono: 4.7.9
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
@@ -4848,11 +4869,17 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.7.1
 
+  '@noble/curves@1.8.2':
+    dependencies:
+      '@noble/hashes': 1.7.2
+
   '@noble/hashes@1.4.0': {}
 
   '@noble/hashes@1.7.0': {}
 
   '@noble/hashes@1.7.1': {}
+
+  '@noble/hashes@1.7.2': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -4873,9 +4900,9 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@ponder/utils@0.2.3(typescript@5.8.3)(viem@2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+  '@ponder/utils@0.2.7(typescript@5.8.3)(viem@2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
-      viem: 2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     optionalDependencies:
       typescript: 5.8.3
 
@@ -5296,8 +5323,8 @@ snapshots:
 
   '@scure/bip32@1.6.2':
     dependencies:
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.1
+      '@noble/curves': 1.8.2
+      '@noble/hashes': 1.7.2
       '@scure/base': 1.2.4
 
   '@scure/bip39@1.3.0':
@@ -5307,7 +5334,7 @@ snapshots:
 
   '@scure/bip39@1.5.4':
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.7.2
       '@scure/base': 1.2.4
 
   '@socket.io/component-emitter@3.1.2': {}
@@ -6762,7 +6789,7 @@ snapshots:
 
   hey-listen@1.0.8: {}
 
-  hono@4.7.6: {}
+  hono@4.7.9: {}
 
   html-url-attributes@3.0.1: {}
 
@@ -6873,6 +6900,10 @@ snapshots:
       ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
   isows@1.0.6(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
+    dependencies:
+      ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+
+  isows@1.0.7(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)):
     dependencies:
       ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
 
@@ -7496,8 +7527,8 @@ snapshots:
   ox@0.6.9(typescript@5.8.3)(zod@3.24.2):
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
-      '@noble/curves': 1.8.1
-      '@noble/hashes': 1.7.1
+      '@noble/curves': 1.8.2
+      '@noble/hashes': 1.7.2
       '@scure/bip32': 1.6.2
       '@scure/bip39': 1.5.4
       abitype: 1.0.8(typescript@5.8.3)(zod@3.24.2)
@@ -7665,7 +7696,7 @@ snapshots:
 
   pngjs@5.0.0: {}
 
-  ponder@0.10.12(@opentelemetry/api@1.9.0)(@types/node@20.17.30)(hono@4.7.6)(typescript@5.8.3)(viem@2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2):
+  ponder@0.11.1(@opentelemetry/api@1.9.0)(@types/node@20.17.30)(hono@4.7.9)(typescript@5.8.3)(viem@2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2):
     dependencies:
       '@babel/code-frame': 7.26.2
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
@@ -7673,8 +7704,8 @@ snapshots:
       '@escape.tech/graphql-armor-max-aliases': 2.6.0
       '@escape.tech/graphql-armor-max-depth': 2.4.0
       '@escape.tech/graphql-armor-max-tokens': 2.5.0
-      '@hono/node-server': 1.13.3(hono@4.7.6)
-      '@ponder/utils': 0.2.3(typescript@5.8.3)(viem@2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      '@hono/node-server': 1.13.3(hono@4.7.9)
+      '@ponder/utils': 0.2.7(typescript@5.8.3)(viem@2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       abitype: 0.10.3(typescript@5.8.3)(zod@3.24.2)
       ansi-escapes: 7.0.0
       commander: 12.1.0
@@ -7686,7 +7717,7 @@ snapshots:
       glob: 10.4.5
       graphql: 16.10.0
       graphql-yoga: 5.13.3(graphql@16.10.0)
-      hono: 4.7.6
+      hono: 4.7.9
       http-terminator: 3.2.0
       kysely: 0.26.3
       pg: 8.14.1
@@ -7700,7 +7731,7 @@ snapshots:
       stacktrace-parser: 0.1.11
       superjson: 2.2.2
       terminal-size: 4.0.0
-      viem: 2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       vite: 5.0.7(@types/node@20.17.30)
       vite-node: 1.0.2(@types/node@20.17.30)
       vite-tsconfig-paths: 4.3.1(typescript@5.8.3)(vite@5.0.7(@types/node@20.17.30))
@@ -8496,6 +8527,23 @@ snapshots:
       '@scure/bip39': 1.5.4
       abitype: 1.0.8(typescript@5.8.3)(zod@3.24.2)
       isows: 1.0.6(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      ox: 0.6.9(typescript@5.8.3)(zod@3.24.2)
+      ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
+  viem@2.29.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2):
+    dependencies:
+      '@noble/curves': 1.8.2
+      '@noble/hashes': 1.7.2
+      '@scure/bip32': 1.6.2
+      '@scure/bip39': 1.5.4
+      abitype: 1.0.8(typescript@5.8.3)(zod@3.24.2)
+      isows: 1.0.7(ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       ox: 0.6.9(typescript@5.8.3)(zod@3.24.2)
       ws: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     optionalDependencies:
