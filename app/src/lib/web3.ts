@@ -1,4 +1,4 @@
-import { farcasterFrame } from '@farcaster/frame-wagmi-connector'
+// import { farcasterFrame } from '@farcaster/frame-wagmi-connector'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { createConfig, http } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
@@ -18,7 +18,8 @@ const chains = [mainnet] as const
 
 export const wagmiConfig = createConfig({
   chains,
-  connectors: [...connectors, farcasterFrame()],
+  // connectors: [...connectors, farcasterFrame()],
+  connectors: [...connectors],
   transports: {
     [mainnet.id]: http(process.env.NEXT_PUBLIC_ETH_RPC_URL, {
       // Some RPC providers don't support batch requests
