@@ -1,3 +1,5 @@
+import { Fragment } from 'react'
+
 const links = [
   { href: 'https://ens.domains', label: 'ENS' },
   { href: 'https://docs/ens.domains/dao', label: 'Governance Docs' },
@@ -9,9 +11,8 @@ export function Footer() {
   return (
     <footer className="flex justify-center gap-3 text-zinc-600">
       {links.map(({ href, label }, idx) => (
-        <>
+        <Fragment key={href}>
           <a
-            key={href}
             href={href}
             target="_blank"
             className="font-medium transition-colors hover:text-primary-brand"
@@ -20,7 +21,7 @@ export function Footer() {
           </a>
 
           {idx < links.length - 1 && <span>/</span>}
-        </>
+        </Fragment>
       ))}
     </footer>
   )
