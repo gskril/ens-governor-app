@@ -1,7 +1,7 @@
-import { Tokens, marked } from 'marked'
+import { type Tokens, marked } from 'marked'
 
 import { proposal } from '../ponder.schema'
-import { Status } from './types'
+import type { Status } from './types'
 
 function getFirstHeadingToken(description: string) {
   const tokens = marked.lexer(description)
