@@ -6,8 +6,7 @@
     "./server",
     "./client",
     "./shared",
-    "./indexer",
-    "./app"
+    "./indexer"
   ],
   "scripts": {
     "dev": "turbo dev",

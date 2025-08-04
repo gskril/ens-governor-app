@@ -12,9 +12,9 @@ export function useProposal(id: string) {
 
 export async function getProposal(id: string) {
   const path = `/proposals/${id}`
-  const url = new URL(path, process.env.NEXT_PUBLIC_PONDER_URL).toString()
+  const url = new URL(path, import.meta.env.VITE_PONDER_URL).toString()
 
-  const response = await fetch(url, { next: { revalidate: 10 } })
+  const response = await fetch(url)
   const json = await response.json()
   const data = json as EnhancedProposalWithVotes
 
