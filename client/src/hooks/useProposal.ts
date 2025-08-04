@@ -15,6 +15,9 @@ export async function getProposal(id: string) {
   const url = new URL(path, import.meta.env.VITE_PONDER_URL).toString()
 
   const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error('Failed to fetch proposal')
+  }
   const json = await response.json()
   const data = json as EnhancedProposalWithVotes
 

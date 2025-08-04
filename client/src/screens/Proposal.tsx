@@ -39,11 +39,17 @@ import { useProposal } from '@/hooks/useProposal'
 
 export function Proposal() {
   const { id } = useParams()
-  const { data: proposal } = useProposal(id as string)
+  const { data: proposal, error: proposalError } = useProposal(id as string)
 
   const { data: proposerEnsName } = useEnsName({ address: proposal?.proposer })
 
-  if (!proposal) return null
+  if (proposalError) {
+    return <div>Error: {proposalError.message}</div>
+  }
+
+  if (!proposal) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="container">

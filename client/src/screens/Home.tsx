@@ -24,7 +24,6 @@ export const revalidate = 10
 
 export function Home() {
   const { data: proposals } = useProposals()
-  console.log(proposals)
 
   return (
     <div className="container">
