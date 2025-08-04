@@ -1,5 +1,3 @@
-'use client'
-
 import { GovernorContract } from 'indexer/contracts'
 import { EnhancedProposal } from 'indexer/types'
 import { useEffect } from 'react'
@@ -25,12 +23,9 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
-import { useIsMounted } from '@/hooks/useIsMounted'
-import revalidateProposal from '@/lib/actions'
 import { bigintToFormattedString } from '@/lib/utils'
 
 export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
-  const isMounted = useIsMounted()
   const { address } = useAccount()
   const { data: blockNumber } = useBlockNumber()
   const tx = useWriteContract()
@@ -52,7 +47,7 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
       },
     ],
     query: {
-      enabled: !!address && !!blockNumber,
+      enabled: !!address && !!blockNumber && !!proposal?.id,
     },
   })
 
@@ -62,9 +57,14 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
   useEffect(() => {
     if (receipt.isSuccess) {
       multicall.refetch()
-      revalidateProposal(proposal.id)
+      // revalidateProposal(proposal.id)
     }
   }, [receipt.isSuccess])
+
+  // Early return if proposal.id is not available
+  if (!proposal?.id) {
+    return <Button variant="primary" disabled isLoading />
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -87,7 +87,7 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
     }
   }
 
-  if (!isMounted || (address && !multicall.data)) {
+  if (address && !multicall.data) {
     return <Button variant="primary" disabled isLoading />
   }
 
@@ -109,8 +109,7 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
         >
           {hasVoted === true
             ? 'Already Voted'
-            : // @ts-expect-error: this isn't reached if multicall.data is undefined
-              `Vote with ${bigintToFormattedString(votingPower)} $ENS`}
+            : `Vote with ${bigintToFormattedString(votingPower ?? '0')} $ENS`}
         </Button>
       </DialogTrigger>
 

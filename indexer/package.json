@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "ponder dev",
+    "build": "tsc --outDir dist",
     "start": "ponder start",
     "codegen": "ponder codegen",
     "lint": "eslint .",
@@ -28,7 +29,7 @@
     "node": ">=18.14"
   },
   "exports": {
-    "./types": "./src/types.ts",
-    "./contracts": "./contracts/index.ts"
+    "./types": "./dist/src/types.js",
+    "./contracts": "./dist/contracts/index.js"
   }
 }

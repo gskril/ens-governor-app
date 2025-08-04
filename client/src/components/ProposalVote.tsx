@@ -1,5 +1,3 @@
-'use client'
-
 import { EnhancedProposalWithVotes } from 'indexer/types'
 import { useEnsName } from 'wagmi'
 

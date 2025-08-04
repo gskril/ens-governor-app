@@ -20,6 +20,7 @@
         "@tanstack/react-query": "^5.84.1",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "indexer": "workspace:*",
         "lucide-react": "^0.507.0",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",

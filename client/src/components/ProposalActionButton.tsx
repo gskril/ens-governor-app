@@ -28,7 +28,7 @@ export function ProposalActionButton({ proposal, action }: Props) {
     functionName: action,
     args: [
       proposal.targets, // targets
-      proposal.values.map((value) => BigInt(value)), // values
+      proposal.values.map((value) => BigInt(value || '0')), // values
       proposal.calldatas, // calldatas
       proposal.descriptionHash, // descriptionHash
     ],

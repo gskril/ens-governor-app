@@ -16,6 +16,7 @@
     "build": "turbo build",
     "build:client": "turbo build --filter=client",
     "build:server": "turbo build --filter=server",
+    "build:indexer": "turbo build --filter=indexer",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "test": "turbo test",

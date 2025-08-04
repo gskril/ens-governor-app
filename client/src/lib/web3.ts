@@ -1,9 +1,9 @@
 import { createConfig, http } from 'wagmi'
-import { base } from 'wagmi/chains'
+import { mainnet } from 'wagmi/chains'
 
 export const wagmiConfig = createConfig({
-  chains: [base],
+  chains: [mainnet],
   transports: {
-    [base.id]: http(),
+    [mainnet.id]: http(process.env.VITE_ETH_RPC_URL),
   },
 })

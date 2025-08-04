@@ -1,5 +1,3 @@
-'use client'
-
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useAccount, useDisconnect, useEnsName } from 'wagmi'
 
