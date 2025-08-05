@@ -2,7 +2,7 @@
 
 import { EnhancedProposalWithVotes } from 'indexer/types'
 import { ArrowDown, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
+import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
@@ -55,7 +55,7 @@ export function Proposal() {
     <div className="container">
       <div className="flex items-center justify-between">
         <Link
-          href="/"
+          to="/"
           className="flex w-fit items-center gap-2 font-semibold text-zinc-500"
         >
           <ArrowLeft className="size-5" />
