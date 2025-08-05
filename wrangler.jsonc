@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ens-governor-app",
+  "main": "./server/dist/index.js", // Path to worker
+  "compatibility_date": "2025-05-25",
+  "assets": {
+    "directory": "./client/dist", // Path to client build folder
+    "not_found_handling": "single-page-application", // Handle SPA routing
+  },
+  "compatibility_flags": ["nodejs_compat"],
+}

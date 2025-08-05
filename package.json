@@ -23,8 +23,10 @@
     "postinstall": "turbo build --filter=shared --filter=server --filter=indexer"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250805.0",
     "bun-types": "latest",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.5",
+    "wrangler": "^4.27.0"
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
