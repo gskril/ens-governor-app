@@ -81,6 +81,7 @@
       "version": "0.0.1",
       "dependencies": {
         "hono": "^4.7.11",
+        "indexer": "workspace:*",
         "shared": "workspace:*",
       },
       "devDependencies": {

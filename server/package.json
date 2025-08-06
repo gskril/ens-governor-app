@@ -5,10 +5,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "bun --watch run src/index.ts && tsc --watch"
+    "dev": "bun --watch run src/index.tsx && tsc --watch"
   },
   "dependencies": {
     "hono": "^4.7.11",
+    "indexer": "workspace:*",
     "shared": "workspace:*"
   },
   "devDependencies": {
