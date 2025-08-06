@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import type { ApiResponse } from 'shared/dist'
+import { marked } from 'marked'
 import { generateHtml } from './html'
 import { getProposal } from './proposals'
 
@@ -42,6 +43,16 @@ export const app = new Hono()
       generateHtml({
         title: proposal.title,
         description: 'An executable proposal to ENS DAO.',
+        children: (
+          <>
+            <h1>{proposal.title}</h1>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: await marked.parse(proposal.description),
+              }}
+            />
+          </>
+        ),
       })
     )
   })
