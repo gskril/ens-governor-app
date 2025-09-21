@@ -1,0 +1,47 @@
+---
+import Layout from "@/layouts/layout.astro";
+import { ProposalTable } from "@/components/ProposalTable";
+import { getProposals } from "@/lib/data";
+import { DiscourseIcon, XIcon } from '@/components/icons'
+import { IconWrapper } from '@/components/icons/IconWrapper'
+
+const proposals = await getProposals();
+---
+<Layout title="ENS Executable Proposals">
+  <div class="mb-8 mt-6">
+    <div class="flex flex-col justify-between gap-3 md:flex-row md:gap-12">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center">
+        <img
+          src="/img/logo-filled.svg"
+          alt="ENS Logo"
+          width={160}
+          height={160}
+          class="w-28 -rotate-3 rounded-3xl border-4 border-white shadow-[0_0_22px_0_#00000029] md:w-40"
+        />
+
+        <div class="space-y-3">
+          <h1 class="space-y-3">
+            <span class="line block text-2xl font-semibold leading-none text-primary-brand">
+              ENS
+            </span>{' '}
+            <span class="block text-3xl font-bold leading-none lg:text-5xl">
+              Executable Proposals
+            </span>
+          </h1>
+
+          <h2 class="text-base font-medium text-zinc-500">
+            View and vote on executable proposals from the ENS Protocol and
+            DAO.
+          </h2>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <IconWrapper href="https://x.com/ENS_DAO" Icon={XIcon} />
+        <IconWrapper href="https://discuss.ens.domains" Icon={DiscourseIcon} text="Forum" />
+      </div>
+    </div>
+  </div>
+
+  <ProposalTable proposals={proposals} />
+</Layout>

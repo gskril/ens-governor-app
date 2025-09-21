@@ -1,13 +1,9 @@
-'use client'
-
-import { EnhancedProposalWithVotes } from 'indexer/types'
-import { ArrowDown, ArrowLeft } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import type { EnhancedProposalWithVotes } from 'indexer/types'
+import { ArrowDown } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useEnsName } from 'wagmi'
 
-import { ConnectButton } from '@/components/ConnectButton'
 import { Footer } from '@/components/Footer'
 import { ProposalActionButton } from '@/components/ProposalActionButton'
 import { ProposalStatus } from '@/components/ProposalStatus'
@@ -34,12 +30,29 @@ import {
   nameWithFallback,
   parseVotes,
 } from '@/lib/utils'
-import { useParams } from 'react-router-dom'
 import { useProposal } from '@/hooks/useProposal'
+import { ClientProviders } from '@/layouts/ClientProviders'
 
-export function Proposal() {
-  const { id } = useParams()
-  const { data: proposal, error: proposalError } = useProposal(id as string)
+export function Proposal({
+  proposal,
+}: {
+  proposal: EnhancedProposalWithVotes
+}) {
+  return (
+    <ClientProviders>
+      <ProposalInternal proposal={proposal} />
+    </ClientProviders>
+  )
+}
+
+function ProposalInternal({
+  proposal: staticProposal,
+}: {
+  proposal: EnhancedProposalWithVotes
+}) {
+  const { data: proposal, error: proposalError } = useProposal(
+    staticProposal.id
+  )
 
   const { data: proposerEnsName } = useEnsName({ address: proposal?.proposer })
 
@@ -52,20 +65,7 @@ export function Proposal() {
   }
 
   return (
-    <div className="container">
-      <div className="flex items-center justify-between">
-        <Link
-          to="/"
-          className="flex w-fit items-center gap-2 font-semibold text-zinc-500"
-        >
-          <ArrowLeft className="size-5" />
-          <span className="hidden sm:block">All Proposals</span>
-          <span className="block sm:hidden">Home</span>
-        </Link>
-
-        <ConnectButton />
-      </div>
-
+    <>
       <div className="grid items-center gap-6 py-4 lg:grid-cols-[2fr_1fr]">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -316,9 +316,7 @@ export function Proposal() {
           </CardContent>
         </Card>
       </div>
-
-      <Footer />
-    </div>
+    </>
   )
 }
 

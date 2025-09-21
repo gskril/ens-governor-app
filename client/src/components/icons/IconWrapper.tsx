@@ -2,11 +2,11 @@ import { Badge } from '@/components/ui/badge'
 
 export function IconWrapper({
   href,
-  icon,
+  Icon,
   text,
 }: {
   href: string
-  icon: React.ReactNode
+  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   text?: string
 }) {
   return (
@@ -20,7 +20,7 @@ export function IconWrapper({
         variant="outline"
         className="flex items-center gap-2 rounded-lg p-2 text-primary-brand hover:bg-primary-brand/5 md:p-2.5"
       >
-        {icon}
+        <Icon />
         {text && <span className="text-sm font-medium">{text}</span>}
       </Badge>
     </a>

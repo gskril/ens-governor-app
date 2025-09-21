@@ -1,8 +1,8 @@
-import { EnhancedProposal } from 'indexer/types'
+import type { EnhancedProposal } from 'indexer/types'
 
 import { cn } from '@/lib/utils'
 
-import { Badge, BadgeProps } from './ui/badge'
+import { Badge, type BadgeProps } from './ui/badge'
 
 type Props = {
   proposal: EnhancedProposal

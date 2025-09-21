@@ -1,0 +1,34 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { Proposal } from '@/screens/Proposal'
+import { getProposals, getProposal } from '@/lib/data'
+import { ClientProviders } from '@/layouts/ClientProviders'
+import { ArrowLeft } from 'lucide-react'
+import { ConnectButton } from '@/components/ConnectButton'
+
+export async function getStaticPaths() {
+  const proposals = await getProposals()
+  return proposals.map((proposal) => ({
+    params: { id: proposal.id },
+  }))
+}
+
+const { id } = Astro.params
+const proposal = await getProposal(id)
+---
+<Layout title={proposal.title}>
+  <div class="flex items-center justify-between">
+    <a
+      href="/"
+      class="flex w-fit items-center gap-2 font-semibold text-zinc-500"
+    >
+      <ArrowLeft className="size-5" />
+      <span class="hidden sm:block">All Proposals</span>
+      <span class="block sm:hidden">Home</span>
+    </a>
+
+    <ConnectButton client:load />
+  </div>
+  
+  <Proposal proposal={proposal} client:load/>
+</Layout>

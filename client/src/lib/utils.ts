@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
-import { EnhancedProposal } from 'indexer/types'
+import type { EnhancedProposal } from 'indexer/types'
 import { twMerge } from 'tailwind-merge'
-import { Address } from 'viem'
+import type { Address } from 'viem'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

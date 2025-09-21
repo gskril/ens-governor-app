@@ -1,5 +1,5 @@
 import { GovernorContract } from 'indexer/contracts'
-import { EnhancedProposal } from 'indexer/types'
+import type { EnhancedProposal } from 'indexer/types'
 import { useEffect } from 'react'
 import {
   useAccount,

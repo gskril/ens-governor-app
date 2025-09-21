@@ -1,4 +1,4 @@
-import { EnhancedProposalWithVotes } from 'indexer/types'
+import type { EnhancedProposalWithVotes } from 'indexer/types'
 
 import { Typography } from '@/components/ui/typography'
 import {

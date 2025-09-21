@@ -1,0 +1,23 @@
+---
+import "../index.css";
+import { Footer } from "@/components/Footer";
+
+type Props = {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<html>
+  <head>
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="container">
+      <slot />
+
+      <Footer />
+    </div>
+
+  </body>
+</html>

@@ -9,8 +9,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn, nameWithFallback } from '@/lib/utils'
+import { ClientProviders } from '@/layouts/ClientProviders'
 
 export function ConnectButton() {
+  return (
+    <ClientProviders>
+      <ConnectButtonInternal />
+    </ClientProviders>
+  )
+}
+
+export function ConnectButtonInternal() {
   const { openConnectModal } = useConnectModal()
   const { disconnect } = useDisconnect()
 

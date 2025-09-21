@@ -1,4 +1,4 @@
-import { EnhancedProposalWithVotes } from 'indexer/types'
+import type { EnhancedProposalWithVotes } from 'indexer/types'
 import { useEnsName } from 'wagmi'
 
 import { bigintToFormattedString, cn, nameWithFallback } from '@/lib/utils'
