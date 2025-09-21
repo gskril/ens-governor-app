@@ -15,6 +15,7 @@ export function ProposalVote({ vote }: Props) {
       <div className="flex w-full justify-between gap-4">
         <div className="flex items-center gap-1">
           <img
+            loading="lazy"
             src={
               ensName
                 ? `https://ens-api.gregskril.com/avatar/${ensName}?width=48`
