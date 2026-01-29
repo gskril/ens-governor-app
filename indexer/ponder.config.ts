@@ -1,5 +1,4 @@
 import { createConfig } from 'ponder'
-import { http } from 'viem'
 
 import { GovernorContract } from './contracts'
 
@@ -7,7 +6,8 @@ export default createConfig({
   chains: {
     mainnet: {
       id: 1,
-      rpc: http(process.env.PONDER_RPC_URL_1),
+      rpc: process.env.PONDER_RPC_URL_1,
+      ws: process.env.PONDER_WS_URL_1,
     },
   },
   contracts: {
