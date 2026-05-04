@@ -5,7 +5,6 @@ import { EnhancedProposal } from 'indexer/types'
 import { useEffect } from 'react'
 import {
   useAccount,
-  useBlockNumber,
   useReadContracts,
   useWaitForTransactionReceipt,
   useWriteContract,
@@ -32,7 +31,6 @@ import { bigintToFormattedString } from '@/lib/utils'
 export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
   const isMounted = useIsMounted()
   const { address } = useAccount()
-  const { data: blockNumber } = useBlockNumber()
   const tx = useWriteContract()
   const receipt = useWaitForTransactionReceipt({ hash: tx.data })
 
@@ -41,18 +39,18 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
       {
         ...GovernorContract,
         functionName: 'hasVoted',
-        // @ts-expect-error: the query is not run until the address and blockNumber are known
+        // @ts-expect-error: the query is not run until the address is known
         args: [BigInt(proposal.id), address],
       },
       {
         ...GovernorContract,
         functionName: 'getVotes',
-        // @ts-expect-error: the query is not run until the address and blockNumber are known
-        args: [address, (blockNumber ?? BigInt(0)) - BigInt(1)],
+        // @ts-expect-error: the query is not run until the address is known
+        args: [address, BigInt(proposal.startBlock)],
       },
     ],
     query: {
-      enabled: !!address && !!blockNumber,
+      enabled: !!address,
     },
   })
 
