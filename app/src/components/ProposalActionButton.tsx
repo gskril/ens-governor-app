@@ -6,9 +6,9 @@ import {
   useAccount,
   useSimulateContract,
   useWaitForTransactionReceipt,
-  useWriteContract,
 } from 'wagmi'
 
+import { useEstimatedWriteContract } from '@/hooks/useEstimatedWriteContract'
 import { cn } from '@/lib/utils'
 
 import { Button, buttonVariants } from './ui/button'
@@ -20,7 +20,7 @@ interface Props {
 
 export function ProposalActionButton({ proposal, action }: Props) {
   const { address } = useAccount()
-  const tx = useWriteContract()
+  const tx = useEstimatedWriteContract()
   const receipt = useWaitForTransactionReceipt({ hash: tx.data })
 
   const data = {

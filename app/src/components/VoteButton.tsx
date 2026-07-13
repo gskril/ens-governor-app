@@ -7,7 +7,6 @@ import {
   useAccount,
   useReadContracts,
   useWaitForTransactionReceipt,
-  useWriteContract,
 } from 'wagmi'
 
 import { Button } from '@/components/ui/button'
@@ -24,6 +23,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
+import { useEstimatedWriteContract } from '@/hooks/useEstimatedWriteContract'
 import { useIsMounted } from '@/hooks/useIsMounted'
 import revalidateProposal from '@/lib/actions'
 import { bigintToFormattedString } from '@/lib/utils'
@@ -31,7 +31,7 @@ import { bigintToFormattedString } from '@/lib/utils'
 export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
   const isMounted = useIsMounted()
   const { address } = useAccount()
-  const tx = useWriteContract()
+  const tx = useEstimatedWriteContract()
   const receipt = useWaitForTransactionReceipt({ hash: tx.data })
 
   const multicall = useReadContracts({
