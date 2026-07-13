@@ -1,4 +1,19 @@
-import type { EstimateContractGasParameters, PublicClient } from 'viem'
+import { useMutation } from '@tanstack/react-query'
+import type {
+  Abi,
+  Address,
+  EstimateContractGasParameters,
+  PublicClient,
+} from 'viem'
+import { useAccount, usePublicClient, useWriteContract } from 'wagmi'
+
+type EstimatedWriteContractParameters = {
+  abi: Abi
+  address: Address
+  functionName: string
+  args?: readonly unknown[]
+  value?: bigint
+}
 
 // Wallets like MetaMask often overestimate gas, which makes transactions look
 // (and sometimes be) more expensive than necessary. Estimating through our own
@@ -10,16 +25,10 @@ import type { EstimateContractGasParameters, PublicClient } from 'viem'
 // refunded, so this doesn't increase the actual cost.
 const GAS_LIMIT_BUFFER_PERCENT = BigInt(20)
 
-export type GasParameters = {
-  gas?: bigint
-  maxFeePerGas?: bigint
-  maxPriorityFeePerGas?: bigint
-}
-
-export async function estimateGasParameters(
+async function estimateGasParameters(
   client: PublicClient | undefined,
   params: EstimateContractGasParameters
-): Promise<GasParameters> {
+) {
   if (!client) return {}
 
   try {
@@ -38,4 +47,25 @@ export async function estimateGasParameters(
     console.error('Gas estimation failed:', error)
     return {}
   }
+}
+
+// Drop-in alternative to `useWriteContract` that estimates gas before writing.
+// `isPending` covers both the estimation and the wallet confirmation.
+export function useEstimatedWriteContract() {
+  const { address } = useAccount()
+  const publicClient = usePublicClient()
+  const { writeContractAsync } = useWriteContract()
+
+  const mutation = useMutation({
+    mutationFn: async (params: EstimatedWriteContractParameters) => {
+      const gasParams = await estimateGasParameters(publicClient, {
+        ...params,
+        account: address,
+      })
+
+      return writeContractAsync({ ...params, ...gasParams })
+    },
+  })
+
+  return { ...mutation, writeContract: mutation.mutate }
 }

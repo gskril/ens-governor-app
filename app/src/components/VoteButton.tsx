@@ -2,13 +2,11 @@
 
 import { GovernorContract } from 'indexer/contracts'
 import { EnhancedProposal } from 'indexer/types'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   useAccount,
-  usePublicClient,
   useReadContracts,
   useWaitForTransactionReceipt,
-  useWriteContract,
 } from 'wagmi'
 
 import { Button } from '@/components/ui/button'
@@ -25,18 +23,16 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
+import { useEstimatedWriteContract } from '@/hooks/useEstimatedWriteContract'
 import { useIsMounted } from '@/hooks/useIsMounted'
 import revalidateProposal from '@/lib/actions'
-import { estimateGasParameters } from '@/lib/gas'
 import { bigintToFormattedString } from '@/lib/utils'
 
 export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
   const isMounted = useIsMounted()
   const { address } = useAccount()
-  const publicClient = usePublicClient()
-  const tx = useWriteContract()
+  const tx = useEstimatedWriteContract()
   const receipt = useWaitForTransactionReceipt({ hash: tx.data })
-  const [isEstimatingGas, setIsEstimatingGas] = useState(false)
 
   const multicall = useReadContracts({
     contracts: [
@@ -68,45 +64,24 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
     }
   }, [receipt.isSuccess])
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     const choice = Number(formData.get('choice') as string)
     const reason = formData.get('reason') as string
 
-    setIsEstimatingGas(true)
-    try {
-      if (reason) {
-        const request = {
-          ...GovernorContract,
-          functionName: 'castVoteWithReason',
-          args: [BigInt(proposal.id), choice, reason],
-        } as const
-
-        tx.writeContract({
-          ...request,
-          ...(await estimateGasParameters(publicClient, {
-            ...request,
-            account: address,
-          })),
-        })
-      } else {
-        const request = {
-          ...GovernorContract,
-          functionName: 'castVote',
-          args: [BigInt(proposal.id), choice],
-        } as const
-
-        tx.writeContract({
-          ...request,
-          ...(await estimateGasParameters(publicClient, {
-            ...request,
-            account: address,
-          })),
-        })
-      }
-    } finally {
-      setIsEstimatingGas(false)
+    if (reason) {
+      tx.writeContract({
+        ...GovernorContract,
+        functionName: 'castVoteWithReason',
+        args: [BigInt(proposal.id), choice, reason],
+      })
+    } else {
+      tx.writeContract({
+        ...GovernorContract,
+        functionName: 'castVote',
+        args: [BigInt(proposal.id), choice],
+      })
     }
   }
 
@@ -193,9 +168,7 @@ export function VoteButton({ proposal }: { proposal: EnhancedProposal }) {
                   type="submit"
                   variant="primary"
                   className="font-bold"
-                  isLoading={
-                    isEstimatingGas || tx.isPending || receipt.isLoading
-                  }
+                  isLoading={tx.isPending || receipt.isLoading}
                 >
                   Vote with {bigintToFormattedString(votingPower ?? '0')} $ENS
                 </Button>
