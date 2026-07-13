@@ -2,13 +2,16 @@
 
 import { GovernorContract } from 'indexer/contracts'
 import { EnhancedProposal } from 'indexer/types'
+import { useState } from 'react'
 import {
   useAccount,
+  usePublicClient,
   useSimulateContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
 
+import { estimateGasParameters } from '@/lib/gas'
 import { cn } from '@/lib/utils'
 
 import { Button, buttonVariants } from './ui/button'
@@ -20,8 +23,10 @@ interface Props {
 
 export function ProposalActionButton({ proposal, action }: Props) {
   const { address } = useAccount()
+  const publicClient = usePublicClient()
   const tx = useWriteContract()
   const receipt = useWaitForTransactionReceipt({ hash: tx.data })
+  const [isEstimatingGas, setIsEstimatingGas] = useState(false)
 
   const data = {
     ...GovernorContract,
@@ -39,9 +44,21 @@ export function ProposalActionButton({ proposal, action }: Props) {
     query: { enabled: !!address },
   })
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    tx.writeContract(data)
+
+    setIsEstimatingGas(true)
+    try {
+      tx.writeContract({
+        ...data,
+        ...(await estimateGasParameters(publicClient, {
+          ...data,
+          account: address,
+        })),
+      })
+    } finally {
+      setIsEstimatingGas(false)
+    }
   }
 
   if (!simulate.data) return null
@@ -67,7 +84,7 @@ export function ProposalActionButton({ proposal, action }: Props) {
         type="submit"
         variant="primary"
         className="w-full font-bold capitalize"
-        isLoading={tx.isPending || receipt.isLoading}
+        isLoading={isEstimatingGas || tx.isPending || receipt.isLoading}
       >
         {action}
       </Button>
