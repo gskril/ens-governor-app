@@ -36,6 +36,17 @@ export function formatTimestamp(
   return base
 }
 
+/**
+ * Some proposal descriptions are submitted on-chain with markdown syntax
+ * characters (#, [, ], (, ), !) backslash-escaped, likely due to a lossy
+ * rich-text-to-markdown export from the authoring tool. This turns headings,
+ * links, and images into literal escaped text instead of rendering them.
+ * Undo that over-escaping so the markdown renders as intended.
+ */
+export function unescapeMarkdownSyntax(description: string) {
+  return description.replace(/\\([#[\]()!])/g, '$1')
+}
+
 export function getTotalVotes(proposal: EnhancedProposal) {
   return (
     BigInt(proposal.forVotes) +

@@ -33,6 +33,7 @@ import {
   getQuorumProgress,
   nameWithFallback,
   parseVotes,
+  unescapeMarkdownSyntax,
 } from '@/lib/utils'
 
 type Props = {
@@ -237,7 +238,7 @@ export function ProposalPageClient({ proposal }: Props) {
                   }}
                   remarkPlugins={[remarkGfm]}
                 >
-                  {proposal.description}
+                  {unescapeMarkdownSyntax(proposal.description)}
                 </ReactMarkdown>
               </TabsContent>
 
