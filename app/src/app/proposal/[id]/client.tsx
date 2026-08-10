@@ -10,6 +10,7 @@ import { useEnsName } from 'wagmi'
 import { ConnectButton } from '@/components/ConnectButton'
 import { Footer } from '@/components/Footer'
 import { ProposalActionButton } from '@/components/ProposalActionButton'
+import { ProposalCalldata } from '@/components/ProposalCalldata'
 import { ProposalStatus } from '@/components/ProposalStatus'
 import { ProposalVote } from '@/components/ProposalVote'
 import { VoteBar } from '@/components/VoteBar'
@@ -243,51 +244,7 @@ export function ProposalPageClient({ proposal }: Props) {
 
               {/* Executable code */}
               <TabsContent value="calldata">
-                {proposal.targets.map((target, index) => (
-                  <div key={index} className="my-6 text-sm">
-                    <pre className="max-w-full whitespace-pre-wrap break-all rounded-md bg-muted p-4">
-                      <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6">
-                        <div>target:</div>
-                        <div>{target}</div>
-
-                        <div>calldata:</div>
-                        <div>{proposal.calldatas[index]}</div>
-
-                        <div>value:</div>
-                        <div>{proposal.values[index]}</div>
-
-                        {proposal.signatures[index] && (
-                          <>
-                            <div>signature:</div>
-                            <div>{proposal.signatures[index]}</div>
-                          </>
-                        )}
-                      </div>
-                    </pre>
-
-                    <div className="mt-2 flex justify-end gap-2">
-                      <a
-                        href={`https://etherscan.io/address/${target}`}
-                        target="_blank"
-                        className={buttonVariants({
-                          size: 'xs',
-                        })}
-                      >
-                        View Contract
-                      </a>
-
-                      <a
-                        href={`https://calldata.swiss-knife.xyz/decoder?calldata=${proposal.calldatas[index]}&chainId=1&address=${target}`}
-                        target="_blank"
-                        className={buttonVariants({
-                          size: 'xs',
-                        })}
-                      >
-                        Decode Calldata
-                      </a>
-                    </div>
-                  </div>
-                ))}
+                <ProposalCalldata proposal={proposal} />
               </TabsContent>
             </CardContent>
           </Tabs>
