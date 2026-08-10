@@ -13,7 +13,6 @@ import {
   etherscanAddressUrl,
   swissKnifeUrl,
 } from '@/lib/decode'
-import { truncateAddress } from '@/lib/utils'
 
 /** Batches longer than this are collapsed to keep the page scannable */
 const COLLAPSE_BATCH_AT = 4
@@ -28,8 +27,6 @@ export function ProposalCalldata({ proposal }: Props) {
       {proposal.targets.map((target, index) => (
         <ProposalAction
           key={index}
-          index={index}
-          total={proposal.targets.length}
           target={target}
           calldata={proposal.calldatas[index]}
           value={BigInt(proposal.values[index] ?? 0)}
@@ -41,22 +38,13 @@ export function ProposalCalldata({ proposal }: Props) {
 }
 
 type ActionProps = {
-  index: number
-  total: number
   target: Address
   calldata: Hex
   value: bigint
   signature?: string
 }
 
-function ProposalAction({
-  index,
-  total,
-  target,
-  calldata,
-  value,
-  signature,
-}: ActionProps) {
+function ProposalAction({ target, calldata, value, signature }: ActionProps) {
   const { data: call, isPending } = useDecodedCalldata({
     target,
     calldata,
@@ -65,41 +53,63 @@ function ProposalAction({
 
   return (
     <div className="text-sm">
-      <div className="max-w-full rounded-md bg-muted p-4">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <div className="flex items-center gap-2">
-            {total > 1 && <span className="text-zinc-500">{index + 1}.</span>}
-            <ContractLabel address={target} name={call?.contractName} />
+      <div className="max-w-full break-all rounded-md bg-muted p-4 font-mono">
+        <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-6">
+          <div>target:</div>
+          <div>
+            {target}
+            {call?.contractName && (
+              <span className="text-zinc-500"> ({call.contractName})</span>
+            )}
           </div>
 
           {isPending && (
-            <span className="flex items-center gap-1.5 text-xs text-zinc-500">
-              <Loader2 className="size-3 animate-spin" />
-              Decoding
-            </span>
+            <>
+              <div>function:</div>
+              <div className="flex items-center gap-1.5 text-zinc-500">
+                <Loader2 className="size-3 animate-spin" />
+                Decoding
+              </div>
+            </>
+          )}
+
+          {!isPending && call && (
+            <>
+              <div>function:</div>
+              <div>
+                <CallView call={call} />
+              </div>
+            </>
+          )}
+
+          {/* Fall back to the raw calldata when we can't decode it */}
+          {!isPending && !call && (
+            <>
+              <div>calldata:</div>
+              <div>{calldata}</div>
+            </>
+          )}
+
+          <div>value:</div>
+          <div>
+            {value.toString()}
+            {value > BigInt(0) && (
+              <span className="text-zinc-500"> ({formatEther(value)} ETH)</span>
+            )}
+          </div>
+
+          {signature && (
+            <>
+              <div>signature:</div>
+              <div>{signature}</div>
+            </>
           )}
         </div>
 
-        {call ? <CallView call={call} /> : <Code>{calldata}</Code>}
-
-        {value > BigInt(0) && (
-          <div className="mt-3 font-mono text-xs">
-            <span className="text-zinc-500">value: </span>
-            {formatEther(value)} ETH
-          </div>
-        )}
-
-        {call ? (
+        {call && (
           <Details summary="Raw calldata">
-            <Code>{calldata}</Code>
+            <div className="text-zinc-600">{calldata}</div>
           </Details>
-        ) : (
-          !isPending && (
-            <p className="mt-3 text-xs text-zinc-500">
-              This calldata couldn&apos;t be decoded automatically. Try one of
-              the tools below.
-            </p>
-          )
         )}
       </div>
 
@@ -128,7 +138,7 @@ function ProposalAction({
 
 function CallView({ call }: { call: DecodedCall }) {
   return (
-    <div className="break-all font-mono text-xs leading-relaxed">
+    <div className="leading-relaxed">
       <div>
         <span className="font-semibold text-primary-brand">
           {call.functionName}
@@ -223,23 +233,51 @@ function NestedCalls({ calls, raw }: { calls: DecodedCall[]; raw: Hex }) {
   const content = (
     <div className="flex flex-col gap-2">
       {calls.map((call, index) => (
-        <div key={index} className="rounded border bg-background p-2">
-          <div className="mb-1.5 flex flex-wrap items-center gap-x-3">
-            <ContractLabel address={call.target} name={call.contractName} />
-
-            {!!call.value && call.value > BigInt(0) && (
-              <span className="text-xs text-zinc-500">
-                {formatEther(call.value)} ETH
-              </span>
+        <div
+          key={index}
+          className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded border bg-background p-2"
+        >
+          <div className="text-zinc-500">target:</div>
+          <div>
+            {call.target ? (
+              <a
+                href={etherscanAddressUrl(call.target)}
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-dotted underline-offset-2"
+              >
+                {call.target}
+              </a>
+            ) : (
+              <span className="text-zinc-500">unknown</span>
+            )}
+            {call.contractName && (
+              <span className="text-zinc-500"> ({call.contractName})</span>
             )}
           </div>
 
-          <CallView call={call} />
+          <div className="text-zinc-500">function:</div>
+          <div>
+            <CallView call={call} />
+          </div>
+
+          {!!call.value && call.value > BigInt(0) && (
+            <>
+              <div className="text-zinc-500">value:</div>
+              <div>
+                {call.value.toString()}
+                <span className="text-zinc-500">
+                  {' '}
+                  ({formatEther(call.value)} ETH)
+                </span>
+              </div>
+            </>
+          )}
         </div>
       ))}
 
       <Details summary="Raw bytes">
-        <Code>{raw}</Code>
+        <div className="text-zinc-600">{raw}</div>
       </Details>
     </div>
   )
@@ -255,44 +293,11 @@ function NestedCalls({ calls, raw }: { calls: DecodedCall[]; raw: Hex }) {
   return content
 }
 
-function ContractLabel({
-  address,
-  name,
-}: {
-  address?: Address
-  name?: string
-}) {
-  if (!address) {
-    return <span className="text-sm text-zinc-500">Unknown contract</span>
-  }
-
-  return (
-    <a
-      href={etherscanAddressUrl(address)}
-      target="_blank"
-      rel="noreferrer"
-      title={address}
-      className="flex flex-wrap items-baseline gap-x-1.5 hover:underline"
-    >
-      {name && <span className="font-semibold">{name}</span>}
-      <span className="break-all font-mono text-xs text-zinc-500">
-        {name ? truncateAddress(address) : address}
-      </span>
-    </a>
-  )
-}
-
 function Indented({ children }: { children: React.ReactNode }) {
   return (
     <div className="my-1 ml-1 flex flex-col gap-1.5 border-l border-zinc-300 pl-3">
       {children}
     </div>
-  )
-}
-
-function Code({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="break-all font-mono text-xs text-zinc-600">{children}</div>
   )
 }
 

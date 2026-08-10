@@ -83,6 +83,10 @@ type ResolvedContract = {
  */
 const MAX_CONCURRENT_LOOKUPS = 4
 
+/** How many times to retry a contract lookup that failed partway through */
+const MAX_LOOKUP_ATTEMPTS = 3
+const RETRY_DELAY_MS = 250
+
 const contractCache = new Map<string, Promise<ResolvedContract | null>>()
 const signatureCache = new Map<Hex, Promise<AbiFunction | null>>()
 const waiting: (() => void)[] = []
@@ -132,6 +136,10 @@ async function getAbiLoader() {
 /**
  * Loads the ABI of a contract, resolving proxies along the way. Unverified
  * contracts fall back to an ABI guessed from their bytecode.
+ *
+ * Public RPCs and ABI sources drop requests often enough that a single attempt
+ * regularly loses the verified ABI (and with it every param name), so failed
+ * lookups are retried and never cached.
  */
 function resolveContract(address: Address, client: PublicClient) {
   const key = address.toLowerCase()
@@ -139,35 +147,76 @@ function resolveContract(address: Address, client: PublicClient) {
   if (cached) return cached
 
   const promise = withLimit(async (): Promise<ResolvedContract | null> => {
-    try {
-      const whatsabi = await getWhatsabi()
+    let contract: ResolvedContract | null = null
 
-      const result = await whatsabi.autoload(address, {
-        provider: client,
-        abiLoader: await getAbiLoader(),
-        signatureLookup: whatsabi.loaders.defaultSignatureLookup,
-        followProxies: true,
-        loadContractResult: true,
-        // Don't give up on the whole contract because one lookup failed
-        onError: () => true,
-      })
+    for (let attempt = 1; attempt <= MAX_LOOKUP_ATTEMPTS; attempt++) {
+      const result = await loadContract(address, client)
+      if (result.complete) return result.contract
 
-      return {
-        name: result.contractResult?.name ?? undefined,
-        // WhatsABI's ABI type is looser than viem's, since functions of
-        // unverified contracts can be missing their name and params
-        functions: (result.abi as unknown[]).filter(isAbiFunction),
-        verified: !!result.abiLoadedFrom,
-      }
-    } catch {
-      // Don't hold onto a failed lookup, so the next action can try again
-      contractCache.delete(key)
-      return null
+      contract = result.contract ?? contract
+      await sleep(RETRY_DELAY_MS * attempt)
     }
+
+    // Something upstream is failing. Use whatever we managed to load, but drop
+    // it from the cache so the next lookup starts over instead of inheriting a
+    // half loaded ABI for the rest of the session.
+    contractCache.delete(key)
+    return contract
   })
 
   contractCache.set(key, promise)
   return promise
+}
+
+type LoadedContract = {
+  contract: ResolvedContract | null
+  /** Whether the lookup ran without anything failing along the way */
+  complete: boolean
+}
+
+async function loadContract(
+  address: Address,
+  client: PublicClient
+): Promise<LoadedContract> {
+  try {
+    const whatsabi = await getWhatsabi()
+    let errored = false
+
+    const result = await whatsabi.autoload(address, {
+      provider: client,
+      abiLoader: await getAbiLoader(),
+      signatureLookup: whatsabi.loaders.defaultSignatureLookup,
+      followProxies: true,
+      loadContractResult: true,
+      // Don't give up on the whole contract because one lookup failed, but
+      // remember that this result is missing something
+      onError: () => {
+        errored = true
+        return true
+      },
+    })
+
+    const verified = !!result.abiLoadedFrom
+
+    return {
+      contract: {
+        name: result.contractResult?.name ?? undefined,
+        // WhatsABI's ABI type is looser than viem's, since functions of
+        // unverified contracts can be missing their name and params
+        functions: (result.abi as unknown[]).filter(isAbiFunction),
+        verified,
+      },
+      // A contract that simply isn't verified anywhere is a real answer, and
+      // retrying it won't produce a better one
+      complete: verified || !errored,
+    }
+  } catch {
+    return { contract: null, complete: false }
+  }
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /** Looks up a function signature in public signature databases */

@@ -51,7 +51,7 @@ export function bigintToFormattedString(count: bigint | string) {
   }).format(parseVotes(count))
 }
 
-export function truncateAddress(address: string) {
+function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
 }
 
