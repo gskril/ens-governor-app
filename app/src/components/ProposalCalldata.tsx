@@ -1,7 +1,7 @@
 'use client'
 
 import { EnhancedProposalWithVotes } from 'indexer/types'
-import { HelpCircle, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Address, Hex, formatEther, isAddress } from 'viem'
 
 import { buttonVariants } from '@/components/ui/button'
@@ -133,7 +133,6 @@ function CallView({ call }: { call: DecodedCall }) {
         <span className="font-semibold text-primary-brand">
           {call.functionName}
         </span>
-        {call.abiSource === 'database' && <GuessedSignatureHint />}
         <span className="text-zinc-500">({call.args.length === 0 && ')'}</span>
       </div>
 
@@ -313,20 +312,5 @@ function Details({
       </summary>
       <div className="mt-2">{children}</div>
     </details>
-  )
-}
-
-/**
- * Signatures pulled from public 4-byte databases can collide, so calls decoded
- * with one are flagged as less trustworthy than a verified ABI.
- */
-function GuessedSignatureHint() {
-  return (
-    <span
-      title="This contract isn't verified. The function signature comes from a public signature database and could be inexact."
-      className="ml-1 inline-flex translate-y-px text-zinc-400"
-    >
-      <HelpCircle className="size-3" />
-    </span>
   )
 }
