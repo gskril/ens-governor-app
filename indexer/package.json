@@ -15,7 +15,7 @@
     "hono": "4.13.0",
     "marked": "^15.0.3",
     "ponder": "^0.16.2",
-    "viem": "^2.45.0"
+    "viem": "^2.55.15"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
