@@ -26,13 +26,13 @@
     "indexer": "workspace:^",
     "lucide-react": "^0.468.0",
     "next": "15.5.23",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-markdown": "^9.0.1",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "~2.55.15",
+    "viem": "~2.55.19",
     "wagmi": "^2.13.5"
   },
   "devDependencies": {
