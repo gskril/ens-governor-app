@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@ponder/utils": "^0.2.7",
-    "hono": "4.13.0",
+    "hono": "4.13.3",
     "marked": "^15.0.3",
     "ponder": "^0.16.2",
-    "viem": "^2.55.15"
+    "viem": "^2.55.19"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
