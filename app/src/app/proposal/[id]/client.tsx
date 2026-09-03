@@ -230,6 +230,11 @@ export function ProposalPageClient({ proposal }: Props) {
                       <TableCaption>{children}</TableCaption>
                     ),
                     hr: () => <hr className="my-6" />,
+                    code: ({ children }) => (
+                      <code className="rounded bg-muted px-1 py-0.5">
+                        {children}
+                      </code>
+                    ),
                     pre: ({ children }) => (
                       <pre className="my-6 max-w-full overflow-x-auto rounded-md bg-muted p-4">
                         {children}
