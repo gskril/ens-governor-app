@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
+import { remarkGroupCodeOnlyParagraphs } from '@/lib/remarkGroupCodeOnlyParagraphs'
 import {
   formatTimestamp,
   getQuorumProgress,
@@ -183,25 +184,11 @@ export function ProposalPageClient({ proposal }: Props) {
                     h6: ({ children }) => (
                       <Typography as="h6">{children}</Typography>
                     ),
-                    p: ({ children, node }) => {
-                      const isCodeOnlyParagraph =
-                        node?.children.length === 1 &&
-                        node.children[0].type === 'element' &&
-                        node.children[0].tagName === 'code'
-
-                      return (
-                        <Typography
-                          as="p"
-                          className={
-                            isCodeOnlyParagraph
-                              ? 'my-6 max-w-full overflow-x-auto rounded-md bg-muted p-4 font-mono'
-                              : 'break-words'
-                          }
-                        >
-                          {children}
-                        </Typography>
-                      )
-                    },
+                    p: ({ children }) => (
+                      <Typography as="p" className="break-words">
+                        {children}
+                      </Typography>
+                    ),
                     a: ({ children, href }) => (
                       <a
                         href={href}
@@ -255,7 +242,7 @@ export function ProposalPageClient({ proposal }: Props) {
                       </pre>
                     ),
                   }}
-                  remarkPlugins={[remarkGfm]}
+                  remarkPlugins={[remarkGfm, remarkGroupCodeOnlyParagraphs]}
                 >
                   {proposal.description}
                 </ReactMarkdown>
