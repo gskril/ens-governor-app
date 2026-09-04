@@ -183,11 +183,25 @@ export function ProposalPageClient({ proposal }: Props) {
                     h6: ({ children }) => (
                       <Typography as="h6">{children}</Typography>
                     ),
-                    p: ({ children }) => (
-                      <Typography as="p" className="break-words">
-                        {children}
-                      </Typography>
-                    ),
+                    p: ({ children, node }) => {
+                      const isCodeOnlyParagraph =
+                        node?.children.length === 1 &&
+                        node.children[0].type === 'element' &&
+                        node.children[0].tagName === 'code'
+
+                      return (
+                        <Typography
+                          as="p"
+                          className={
+                            isCodeOnlyParagraph
+                              ? 'my-6 max-w-full overflow-x-auto rounded-md bg-muted p-4 font-mono'
+                              : 'break-words'
+                          }
+                        >
+                          {children}
+                        </Typography>
+                      )
+                    },
                     a: ({ children, href }) => (
                       <a
                         href={href}
