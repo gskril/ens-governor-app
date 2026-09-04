@@ -115,6 +115,9 @@ importers:
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.0
         version: 5.2.2(prettier@3.5.3)
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
       '@types/node':
         specifier: ^20
         version: 20.17.30

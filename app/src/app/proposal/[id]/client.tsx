@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
+import { remarkGroupCodeOnlyParagraphs } from '@/lib/remarkGroupCodeOnlyParagraphs'
 import {
   formatTimestamp,
   getQuorumProgress,
@@ -241,7 +242,7 @@ export function ProposalPageClient({ proposal }: Props) {
                       </pre>
                     ),
                   }}
-                  remarkPlugins={[remarkGfm]}
+                  remarkPlugins={[remarkGfm, remarkGroupCodeOnlyParagraphs]}
                 >
                   {proposal.description}
                 </ReactMarkdown>
