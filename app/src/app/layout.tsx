@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import { IndexerStatusBar } from '@/components/IndexerStatusBar'
 import { ClientProviders } from '@/components/providers/ClientProviders'
 import { BASE_URL } from '@/lib/constants'
 
@@ -44,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} antialiased`}>
+        <IndexerStatusBar />
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
