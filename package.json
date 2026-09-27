@@ -12,7 +12,10 @@
       "postcss": "8.5.28",
       "esbuild": "0.25.12",
       "minimatch@9": "9.0.9",
-      "@hono/node-server@1": "1.19.17"
+      "@hono/node-server@1": "1.19.17",
+      "kysely": ">=0.28.17",
+      "drizzle-orm": ">=0.45.2",
+      "sharp": ">=0.35.4"
     }
   }
 }
