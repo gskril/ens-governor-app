@@ -14,9 +14,14 @@ export async function getProposals() {
   const path = '/proposals'
   const url = new URL(path, process.env.NEXT_PUBLIC_PONDER_URL).toString()
 
-  const response = await fetch(url, { next: { revalidate: 10 } })
-  const json = await response.json()
-  const data = json as EnhancedProposal[]
+  try {
+    const response = await fetch(url, { next: { revalidate: 10 } })
+    if (!response.ok) return []
 
-  return data
+    const json = await response.json()
+    // The indexer can return an error object instead of a list while it's down
+    return Array.isArray(json) ? (json as EnhancedProposal[]) : []
+  } catch {
+    return []
+  }
 }

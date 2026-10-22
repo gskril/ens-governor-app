@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 import { getProposal } from '@/hooks/useProposal'
 import { BASE_URL } from '@/lib/constants'
 
@@ -12,7 +14,7 @@ export async function generateMetadata({ params }: PageProps) {
   const proposal = await getProposal(proposalId)
 
   return {
-    title: proposal.title,
+    title: proposal?.title,
     other: {
       'fc:frame': JSON.stringify({
         version: 'next',
@@ -34,6 +36,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function ProposalPage({ params }: PageProps) {
   const proposal = await getProposal((await params).id)
+  if (!proposal) notFound()
 
   return <ProposalPageClient proposal={proposal} />
 }
