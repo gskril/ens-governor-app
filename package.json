@@ -2,7 +2,7 @@
   "name": "monorepo",
   "private": true,
   "engines": {
-    "node": ">=18",
+    "node": "22.x",
     "pnpm": ">=10"
   },
   "packageManager": "pnpm@10.15.1",
@@ -13,7 +13,7 @@
       "esbuild": "0.25.12",
       "minimatch@9": "9.0.9",
       "@hono/node-server@1": "1.19.17",
-      "kysely": ">=0.28.17",
+      "kysely": "^0.28.17",
       "drizzle-orm": ">=0.45.2"
     }
   }
